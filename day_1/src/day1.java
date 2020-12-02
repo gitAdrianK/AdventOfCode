@@ -25,7 +25,11 @@ public class day1 {
 			for (int b : numbers) {
 				if (a + b == 2020) {
 					System.out.println(a * b);
-					return;
+				}
+				for (int c : numbers) {
+					if (a + b + c == 2020) {
+						System.out.println(a * b * c);
+					}
 				}
 			}
 		}
