@@ -14,7 +14,7 @@ public class day4 {
 			while ((line = reader.readLine()) != null) {
 				if (line.isEmpty()) {
 					// Evaluate presence of all required fields
-					if (validatePassport(currentPassport)) {
+					if (isValidPassport(currentPassport)) {
 						validPassports++;
 					}
 					currentPassport = "";
@@ -23,7 +23,7 @@ public class day4 {
 				}
 			}
 			// Bcs the terminating newline is already null to the reader we have one last password to check
-			if (validatePassport(currentPassport)) {
+			if (isValidPassport(currentPassport)) {
 				validPassports++;
 			}
 			currentPassport = "";
@@ -36,7 +36,7 @@ public class day4 {
 		System.out.println(validPassports);
 	}
 
-	private static boolean validatePassport(String passport) {
+	private static boolean isValidPassport(String passport) {
 		if (passport.contains("byr") && passport.contains("iyr") && passport.contains("eyr") && passport.contains("hgt")
 				&& passport.contains("hcl") && passport.contains("ecl") && passport.contains("pid")) {
 			return true;
