@@ -18,5 +18,5 @@ for line_counter, line in enumerate(f.readlines()):
 print(trees_encountered)
 result = 1
 for trees in trees_encountered:
-    result = result * trees 
-print(result) 
+    result = result * trees
+print(result)
