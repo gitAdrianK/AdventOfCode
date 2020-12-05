@@ -1,15 +1,22 @@
 use std::fs;
 
 fn main() {
-    let mut highest_id = 0;
+    let mut seats: Vec<u32> = Vec::new();
     let data = fs::read_to_string("input.txt").expect("Unable to read file");
     for input in data.lines() {
         let id = find_seat_id(input);
-        if id > highest_id {
-            highest_id = id;
-        }
+        seats.push(id);
     }
-    println!("{}", highest_id)
+    seats.sort();
+    println!("Highest Id: {}", seats.last().unwrap());
+    let mut my_seat = *seats.first().clone().unwrap();
+    for &seat in seats.iter() {
+        if seat != my_seat {
+            break
+        }
+        my_seat = my_seat + 1;
+    }
+    println!("My seat: {}", my_seat);
 }
 
 fn find_seat_id(input: &str) -> u32 {
