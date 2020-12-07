@@ -8,9 +8,12 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Stack;
 
+import javafx.util.Pair;
+
 public class day7 {
 	public static void main(String args[]) {
-		HashMap<String, ArrayList<String>> bagRules = new HashMap<String, ArrayList<String>>();
+		// This got rather lengthy and overly complicated
+		HashMap<String, ArrayList<Pair<Integer, String>>> bagRules = new HashMap<String, ArrayList<Pair<Integer, String>>>();
 		try {
 			BufferedReader reader = new BufferedReader(new FileReader("input.txt"));
 			String line;
@@ -22,17 +25,23 @@ public class day7 {
 					continue;
 				}
 				String[] splitLine = line.split(" ");
+				// The first two words describe the outer bag
 				String outerBag = splitLine[0] + " " + splitLine[1];
 				splitLine = Arrays.copyOfRange(splitLine, 2, splitLine.length);
 				ArrayList<String> innerSplit = new ArrayList<String>();
 				for (String s : splitLine) {
-					if (!s.matches(".*bag.*|[0-9]|contain")) {
+					if (!s.matches(".*bag.*|contain")) {
 						innerSplit.add(s);
 					}
 				}
-				ArrayList<String> innerBags = new ArrayList<String>();
-				for (int i = 0; i < innerSplit.size(); i += 2) {
-					innerBags.add(innerSplit.get(i) + " " + innerSplit.get(i + 1));
+				int innerAmount = 0;
+				// Inner bags are similar to outer bags but have an additional
+				// amount information at the front
+				ArrayList<Pair<Integer, String>> innerBags = new ArrayList<Pair<Integer, String>>();
+				for (int i = 0; i < innerSplit.size(); i += 3) {
+					innerAmount = Integer.parseInt(innerSplit.get(i));
+					innerBags.add(new Pair<Integer, String>(innerAmount,
+							innerSplit.get(i + 1) + " " + innerSplit.get(i + 2)));
 				}
 				bagRules.put(outerBag, innerBags);
 			}
@@ -45,10 +54,10 @@ public class day7 {
 		// The amount of outer bag options that can contain a gold bag
 		int shinyGoldOutsideOptions = 0;
 		Stack<String> toCheckBags = new Stack<String>();
-		for (Map.Entry<String, ArrayList<String>> kv : bagRules.entrySet()) {
+		for (Map.Entry<String, ArrayList<Pair<Integer, String>>> kv : bagRules.entrySet()) {
 			// Initial fill
-			for (String s : kv.getValue()) {
-				toCheckBags.push(s);
+			for (Pair<Integer, String> pair : kv.getValue()) {
+				toCheckBags.push(pair.getValue());
 			}
 			while (!toCheckBags.isEmpty()) {
 				String current = toCheckBags.pop();
@@ -58,12 +67,37 @@ public class day7 {
 					break;
 				}
 				if (bagRules.containsKey(current)) {
-					for (String s : bagRules.get(current)) {
-						toCheckBags.push(s);
+					ArrayList<Pair<Integer, String>> list = bagRules.get(current);
+					for (Pair<Integer, String> pair : list) {
+						toCheckBags.push(pair.getValue());
 					}
 				}
 			}
 		}
 		System.out.println(shinyGoldOutsideOptions);
+		// The amount of bags contained in one shiny golden bag
+		int shinyGoldContainsBags = 0;
+		if (bagRules.containsKey("shiny gold")) {
+			// Initial fill
+			for (Pair<Integer, String> pair : bagRules.get("shiny gold")) {
+				shinyGoldContainsBags += pair.getKey();
+				for (int i = 0; i < pair.getKey(); i++) {
+					toCheckBags.push(pair.getValue());
+				}
+			}
+			while (!toCheckBags.empty()) {
+				String current = toCheckBags.pop();
+				if (bagRules.containsKey(current)) {
+					ArrayList<Pair<Integer, String>> list = bagRules.get(current);
+					for (Pair<Integer, String> pair : list) {
+						shinyGoldContainsBags += pair.getKey();
+						for (int i = 0; i < pair.getKey(); i++) {
+							toCheckBags.push(pair.getValue());
+						}
+					}
+				}
+			}
+		}
+		System.out.println(shinyGoldContainsBags);
 	}
 }
