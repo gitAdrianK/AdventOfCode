@@ -1,3 +1,17 @@
-﻿# advent_of_code_2020
-Problems and solutions to the advent of code 2020 in various programming languages.
-Flipping a coin, if it lands on heads the problem is solved in java, if it lands on tails the problem is solved in rust, and if it lands on its edge the problem is solved in python.
+# Advent of Code
+ 
+## Advent of Code 2020 
+Problems and solutions to the advent of code 2020 in java, rust, or python.
+*Please note that, this being my first participation in AoC, code for days one to eight is rather "get it working", sorry about that*
+
+Day | Part 1 | Part 2 | Language
+----|--------|--------|---------
+1 | ⭐ | ⭐ | Java
+2 | ⭐ | ⭐ | Rust
+3 | ⭐ | ⭐ | Python
+4 | ⭐ | ⭐ | Java
+5 | ⭐ | ⭐ | Rust
+6 | ⭐ | ⭐ | Python
+7 | ⭐ | ⭐ | Java
+8 | ⭐ | ⭐ | Rust
+9 | ⭐ | ⭐ | Python
