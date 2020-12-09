@@ -1,73 +1,40 @@
-def hasSum(numbers):
-    sum = numbers[-1]
-    for n in numbers[:-1]:
-        for m in numbers[:-1]:
-            if n == m:
-                continue
-            if n + m == sum:
-                return -1
-    return sum
-
-# For a list as small as 25 this function is not faster
-# However if we change
-#   if len(l) == 26:
-# to
-#   if len(l) == 220:
-# We can notice a speed increase
-# Using cProfile:
-# 26 Elements
-#   hasSum      =>  3880 function calls in 0.008 seconds
-#   hasSumAlt   =>  4916 function calls in 0.008 seconds
-# 220 Elements
-#   hasSum      =>  3492 function calls in 1.398 seconds
-#   hasSumAlt   =>  4140 function calls in 0.032 seconds
-def hasSumAlt(numbers):
-    sum = numbers[-1]
-    sorted_numbers = sorted(numbers[:-1])
-    left = 0
-    right = len(sorted_numbers) - 1
-    while left < right:
-        if (sorted_numbers[left] + sorted_numbers[right] == sum):
-            return -1
-        elif (sorted_numbers[left] + sorted_numbers[right] < sum):
-            left += 1
+# One of my best function names yet
+def noneIfContained(set_, sum_):
+    set_ = sorted(set_)
+    l, r = 0, len(set_) - 1
+    while l < r:
+        if (set_[l] + set_[r] == sum_):
+            return
+        elif (set_[l] + set_[r] < sum_):
+            l += 1
         else:
-            right -= 1
-    return sum
+            r -= 1
+    return sum_
 
-l = list()
-# Part 1 answer: 50047984
-l2 = list()
-hasFound = False
-f = open("input.txt", "r")
-for line in f.readlines():
-    # Part 2
-    if not hasFound:
-        l2.append(int(line))
-        l2_sum = sum(l2)
-        # Check if just adding a new number to the list gets the result
-        if l2_sum == 50047984:
-            print(min(l2) + max(l2))
-            hasFound = True
-        # If the number was too large take from the front until smaller
-        while l2_sum > 50047984:
-            l2.pop(0)
-            l2_sum = sum(l2)
-            # Check if just removing a number from the list gets the result
-            if l2_sum == 50047984:
-                print(min(l2) + max(l2))
-                hasFound = True
-    # Since the numbers grow larger the sum of consecutive numbers can
-    # only contain numbers from before the part 1 result has been found.
-    # That means by the time part 1 finds its result and breaks the loop
-    # we will already have found a solution to part 2
+def solveDay9(input, preamble):
+    # Setup
+    f = open(input, "r")
+    lines = list([int(l) for l in f.readlines()])
     # Part 1
-    if len(l) == 26:
-        result = hasSumAlt(l)
-        l.pop(0)
-        l.append(int(line))
-        if result > 0:
-            print(result)
+    p1 = None
+    p1_at = None
+    for r in range(preamble, len(lines)):
+        p1 = noneIfContained(lines[r - preamble:r], lines[r])
+        if p1 is not None:
+            p1_at = r
             break
-    else:
-        l.append(int(line))
+    # Part 2
+    p2 = None
+    l, r = 0, 1
+    while p2 is None and r < p1_at:
+        sum_ = sum(lines[l:r])
+        if sum_ == p1:
+            p2 = min(lines[l:r]) + max(lines[l:r])
+        elif sum_ < p1:
+            r += 1
+        else:
+            l += 1
+    return(p1, p2)
+
+assert (127, 62) == solveDay9("test_input.txt", 5)
+print(solveDay9("input.txt", 25))
