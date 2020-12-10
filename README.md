@@ -16,3 +16,4 @@ Day | Part 1 | Part 2 | Language
 7 | ⭐ | ⭐ | Java
 8 | ⭐ | ⭐ | Rust
 9 | ⭐ | ⭐ | Python
+10| ⭐ | ⭐ | Java 
