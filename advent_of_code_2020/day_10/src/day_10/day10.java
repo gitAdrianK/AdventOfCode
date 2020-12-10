@@ -36,8 +36,13 @@ public class day10 {
 				diff3++;
 			}
 		}
-		BigInteger arrange = traverseGraph(0, numbers, new HashMap<Integer, BigInteger>());
+		// Part 2
+		BigInteger arrange = traverseGraph(numbers);
 		System.out.println(input + ", " + diff1 * diff3 + ", " + arrange);
+	}
+
+	private static BigInteger traverseGraph(ArrayList<Integer> graph) {
+		return traverseGraph(0, graph, new HashMap<Integer, BigInteger>());
 	}
 
 	private static BigInteger traverseGraph(int start, ArrayList<Integer> graph, HashMap<Integer, BigInteger> cache) {
@@ -60,5 +65,4 @@ public class day10 {
 		cache.put(start, sum);
 		return sum;
 	}
-
 }
