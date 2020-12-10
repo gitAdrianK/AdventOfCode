@@ -6,6 +6,8 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 
 public class day10 {
@@ -19,7 +21,7 @@ public class day10 {
 	private static void solveDay10(String input) throws FileNotFoundException {
 		int diff1 = 0;
 		int diff3 = 1;
-		ArrayList<Integer> numbers = new ArrayList<Integer>();
+		List<Integer> numbers = new ArrayList<Integer>();
 		Scanner sc = new Scanner(new File(input));
 		// Charging outlet
 		numbers.add(0);
@@ -41,11 +43,11 @@ public class day10 {
 		System.out.println(input + ", " + diff1 * diff3 + ", " + arrange);
 	}
 
-	private static BigInteger traverseGraph(ArrayList<Integer> graph) {
-		return traverseGraph(0, graph, new HashMap<Integer, BigInteger>());
+	private static BigInteger traverseGraph(List<Integer> graph) {
+		return traverseGraph(graph, 0, new HashMap<Integer, BigInteger>());
 	}
 
-	private static BigInteger traverseGraph(int start, ArrayList<Integer> graph, HashMap<Integer, BigInteger> cache) {
+	private static BigInteger traverseGraph(List<Integer> graph, int start, Map<Integer, BigInteger> cache) {
 		if (cache.containsKey(start)) {
 			return cache.get(start);
 		}
@@ -60,7 +62,7 @@ public class day10 {
 			if (graph.get(start + i) - graph.get(start) > 3) {
 				break;
 			}
-			sum = sum.add(traverseGraph(start + i, graph, cache));
+			sum = sum.add(traverseGraph(graph, start + i, cache));
 		}
 		cache.put(start, sum);
 		return sum;
