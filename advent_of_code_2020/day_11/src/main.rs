@@ -12,13 +12,12 @@ fn solve_day_11(input: &str) -> (usize, usize) {
     for line in data.lines() {
         seating.push_row(tokenize_seating(line));
     }
-    return (solve(&seating, 4, 1), solve(&seating, 5, 0));
+    (solve(&seating, 4, 1), solve(&seating, 5, 0))
 }
 
 fn tokenize_seating(line: &str) -> Vec<Seating> {
     let mut vec: Vec<Seating> = Vec::new();
-    let chars = line.chars();
-    for c in chars {
+    for c in line.chars() {
         match c {
             '.' => vec.push(Seating::Floor),
             'L' => vec.push(Seating::Empty),
@@ -26,7 +25,7 @@ fn tokenize_seating(line: &str) -> Vec<Seating> {
             _ => unreachable!(),
         }
     }
-    return vec;
+    vec
 }
 
 fn solve(grid: &Grid<Seating>, tolerance: usize, search_range: usize) -> usize {
@@ -46,7 +45,7 @@ fn solve(grid: &Grid<Seating>, tolerance: usize, search_range: usize) -> usize {
             .filter(|&n| *n == Seating::Occupied)
             .count();
     }
-    return curr_occ;
+    curr_occ
 }
 
 fn do_step(grid: &Grid<Seating>, tolerance: usize, search_range: usize) -> Grid<Seating> {
@@ -54,11 +53,10 @@ fn do_step(grid: &Grid<Seating>, tolerance: usize, search_range: usize) -> Grid<
     for row in 0..grid.rows() {
         let mut vec: Vec<Seating> = Vec::new();
         for col in 0..grid.cols() {
-            let curr_seat = grid.get(row, col).unwrap();
-            let occupied_neighbors = get_occupied_visible(grid, row, col, search_range);
-            match *curr_seat {
+            match grid.get(row, col).unwrap() {
                 Seating::Floor => vec.push(Seating::Floor),
                 Seating::Empty => {
+                    let occupied_neighbors = get_occupied_visible(grid, row, col, search_range);
                     if occupied_neighbors == 0 {
                         vec.push(Seating::Occupied)
                     } else {
@@ -66,6 +64,7 @@ fn do_step(grid: &Grid<Seating>, tolerance: usize, search_range: usize) -> Grid<
                     }
                 }
                 Seating::Occupied => {
+                    let occupied_neighbors = get_occupied_visible(grid, row, col, search_range);
                     if occupied_neighbors >= tolerance {
                         vec.push(Seating::Empty)
                     } else {
@@ -76,7 +75,7 @@ fn do_step(grid: &Grid<Seating>, tolerance: usize, search_range: usize) -> Grid<
         }
         new_grid.push_row(vec)
     }
-    return new_grid;
+    new_grid
 }
 
 fn get_occupied_visible(
@@ -85,28 +84,26 @@ fn get_occupied_visible(
     col: usize,
     search_range: usize,
 ) -> usize {
-    let mut occupied_seats = 0;
     let mut search_range = search_range;
     if search_range == 0 {
-        search_range = usize::MAX - 1;
+        search_range = usize::MAX;
     }
     // Multiplier depending on direction
-    //           (-1, 0)
+    //          (-1, 0)
     //              N
     //              ⬆
     // (0, -1) W ⬅ O ➡ E (0, 1)
     //              ⬇
     //              S
     //           (1, 0)
-    occupied_seats += do_direction(grid, row, col, search_range, -1, -1);
-    occupied_seats += do_direction(grid, row, col, search_range, -1, 0);
-    occupied_seats += do_direction(grid, row, col, search_range, -1, 1);
-    occupied_seats += do_direction(grid, row, col, search_range, 0, -1);
-    occupied_seats += do_direction(grid, row, col, search_range, 0, 1);
-    occupied_seats += do_direction(grid, row, col, search_range, 1, -1);
-    occupied_seats += do_direction(grid, row, col, search_range, 1, 0);
-    occupied_seats += do_direction(grid, row, col, search_range, 1, 1);
-    return occupied_seats;
+    do_direction(grid, row, col, search_range, -1, -1)
+        + do_direction(grid, row, col, search_range, -1, 0)
+        + do_direction(grid, row, col, search_range, -1, 1)
+        + do_direction(grid, row, col, search_range, 0, -1)
+        + do_direction(grid, row, col, search_range, 0, 1)
+        + do_direction(grid, row, col, search_range, 1, -1)
+        + do_direction(grid, row, col, search_range, 1, 0)
+        + do_direction(grid, row, col, search_range, 1, 1)
 }
 
 fn do_direction(
@@ -117,23 +114,23 @@ fn do_direction(
     x_multiplier: isize,
     y_multiplier: isize,
 ) -> usize {
-    for i in 1..search_range + 1 {
+    for i in 1..=search_range {
         let row = row as isize + i as isize * x_multiplier;
         let col = col as isize + i as isize * y_multiplier;
         if row < 0 || col < 0 {
-            return 0;
+            return 0
         }
         if let Some(seat) = grid.get(row as usize, col as usize) {
             match seat {
                 Seating::Occupied => return 1,
                 Seating::Empty => return 0,
-                Seating::Floor => {}
+                Seating::Floor => {},
             }
         } else {
-            return 0;
+            return 0
         }
     }
-    return 0;
+    0
 }
 
 #[derive(Copy, Clone, PartialEq)]
