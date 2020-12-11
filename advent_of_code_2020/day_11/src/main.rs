@@ -1,5 +1,4 @@
 use grid::*;
-use std::fmt;
 use std::fs;
 
 fn main() {
@@ -80,161 +79,61 @@ fn do_step(grid: &Grid<Seating>, tolerance: usize, search_range: usize) -> Grid<
     return new_grid;
 }
 
-fn get_occupied_visible(grid: &Grid<Seating>, row: usize, col: usize, search_range: usize) -> usize {
+fn get_occupied_visible(
+    grid: &Grid<Seating>,
+    row: usize,
+    col: usize,
+    search_range: usize,
+) -> usize {
     let mut occupied_seats = 0;
     let mut search_range = search_range;
     if search_range == 0 {
         search_range = usize::MAX - 1;
     }
-    // XXX: ¯\_(ツ)_/¯ Lets not talk about it, I am not proud of it
-    // I WILL rewrite this.
-    occupied_seats += do_north(grid, row, col, search_range);
-    occupied_seats += do_north_east(grid, row, col, search_range);
-    occupied_seats += do_east(grid, row, col, search_range);
-    occupied_seats += do_south_east(grid, row, col, search_range);
-    occupied_seats += do_south(grid, row, col, search_range);
-    occupied_seats += do_south_west(grid, row, col, search_range);
-    occupied_seats += do_west(grid, row, col, search_range);
-    occupied_seats += do_north_west(grid, row, col, search_range);
+    // Multiplier depending on direction
+    //           (-1, 0)
+    //              N
+    //              ⬆
+    // (0, -1) W ⬅ O ➡ E (0, 1)
+    //              ⬇
+    //              S
+    //           (1, 0)
+    occupied_seats += do_direction(grid, row, col, search_range, -1, -1);
+    occupied_seats += do_direction(grid, row, col, search_range, -1, 0);
+    occupied_seats += do_direction(grid, row, col, search_range, -1, 1);
+    occupied_seats += do_direction(grid, row, col, search_range, 0, -1);
+    occupied_seats += do_direction(grid, row, col, search_range, 0, 1);
+    occupied_seats += do_direction(grid, row, col, search_range, 1, -1);
+    occupied_seats += do_direction(grid, row, col, search_range, 1, 0);
+    occupied_seats += do_direction(grid, row, col, search_range, 1, 1);
     return occupied_seats;
 }
 
-fn do_north(grid: &Grid<Seating>, row: usize, col: usize, search_range: usize) -> usize {
+fn do_direction(
+    grid: &Grid<Seating>,
+    row: usize,
+    col: usize,
+    search_range: usize,
+    x_multiplier: isize,
+    y_multiplier: isize,
+) -> usize {
     for i in 1..search_range + 1 {
-        let pos = row as isize - i as isize;
-        if pos < 0 {
+        let row = row as isize + i as isize * x_multiplier;
+        let col = col as isize + i as isize * y_multiplier;
+        if row < 0 || col < 0 {
             return 0;
         }
-        if let Some(seat) = grid.get(pos as usize, col) {
+        if let Some(seat) = grid.get(row as usize, col as usize) {
             match seat {
                 Seating::Occupied => return 1,
                 Seating::Empty => return 0,
-                Seating::Floor => {},
-            }
-        }
-    }
-    return 0
-}
-
-fn do_south(grid: &Grid<Seating>, row: usize, col: usize, search_range: usize) -> usize {
-    for i in 1..search_range + 1 {
-        if let Some(seat) = grid.get(row + i as usize, col) {
-            match seat {
-                Seating::Occupied => return 1,
-                Seating::Empty => return 0,
-                Seating::Floor => {},
+                Seating::Floor => {}
             }
         } else {
-            return 0
-        }
-    }
-    return 0
-}
-
-fn do_west(grid: &Grid<Seating>, row: usize, col: usize, search_range: usize) -> usize {
-    for i in 1..search_range + 1 {
-        let pos = col as isize - i as isize;
-        if pos < 0 {
             return 0;
         }
-        if let Some(seat) = grid.get(row, pos as usize) {
-            match seat {
-                Seating::Occupied => return 1,
-                Seating::Empty => return 0,
-                Seating::Floor => {},
-            }
-        }
     }
-    return 0
-}
-
-fn do_east(grid: &Grid<Seating>, row: usize, col: usize, search_range: usize) -> usize {
-    for i in 1..search_range + 1 {
-        if let Some(seat) = grid.get(row, col + i as usize) {
-            match seat {
-                Seating::Occupied => return 1,
-                Seating::Empty => return 0,
-                Seating::Floor => {},
-            }
-        } else {
-            return 0
-        }
-    }
-    return 0
-}
-
-fn do_north_west(grid: &Grid<Seating>, row: usize, col: usize, search_range: usize) -> usize {
-    for i in 1..search_range + 1 {
-        let pos_x = row as isize - i as isize;
-        if pos_x < 0 {
-            return 0;
-        }
-        let pos_y = col as isize - i as isize;
-        if pos_y < 0 {
-            return 0;
-        }
-        if let Some(seat) = grid.get(pos_x as usize, pos_y as usize) {
-            match seat {
-                Seating::Occupied => return 1,
-                Seating::Empty => return 0,
-                Seating::Floor => {},
-            }
-        }
-    }
-    return 0
-}
-
-fn do_south_east(grid: &Grid<Seating>, row: usize, col: usize, search_range: usize) -> usize {
-    for i in 1..search_range + 1 {
-        if let Some(seat) = grid.get(row + i as usize, col + i as usize) {
-            match seat {
-                Seating::Occupied => return 1,
-                Seating::Empty => return 0,
-                Seating::Floor => {},
-            }
-        } else {
-            return 0
-        }
-    }
-    return 0
-}
-
-fn do_north_east(grid: &Grid<Seating>, row: usize, col: usize, search_range: usize) -> usize {
-    for i in 1..search_range + 1 {
-        let pos = row as isize - i as isize;
-        if pos < 0 {
-            return 0;
-        }
-        if let Some(seat) = grid.get(pos as usize, col + i as  usize) {
-            match seat {
-                Seating::Occupied => return 1,
-                Seating::Empty => return 0,
-                Seating::Floor => {},
-            }
-        } else {
-            return 0
-        }
-    }
-    return 0
-}
-
-fn do_south_west(grid: &Grid<Seating>, row: usize, col: usize, search_range: usize) -> usize {
-    for i in 1..search_range + 1 {
-        let pos = col as isize - i as isize;
-        if pos < 0 {
-            return 0;
-        }
-        if let Some(seat) = grid.get(row + i as usize, pos as usize) {
-            match seat {
-                Seating::Occupied => return 1,
-                Seating::Empty => return 0,
-                Seating::Floor => {},
-            }
-        } else {
-            return 0
-        }
-    }
-    return 0
+    return 0;
 }
 
 #[derive(Copy, Clone, PartialEq)]
@@ -242,20 +141,4 @@ enum Seating {
     Empty,
     Occupied,
     Floor,
-}
-
-impl Default for Seating {
-    fn default() -> Self {
-        Seating::Floor
-    }
-}
-
-impl fmt::Debug for Seating {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        match &self {
-            Seating::Empty => write!(f, "L"),
-            Seating::Floor => write!(f, "."),
-            Seating::Occupied => write!(f, "#"),
-        }
-    }
 }
