@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.math.BigInteger;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
 
 public class day13 {
@@ -21,7 +20,7 @@ public class day13 {
 	}
 
 	private static int solvePart1(String input) throws FileNotFoundException {
-		List<Integer> numbers = new ArrayList<Integer>();
+		ArrayList<Integer> numbers = new ArrayList<Integer>();
 		Scanner sc = new Scanner(new File(input));
 		int arrival = sc.nextInt();
 		for (String interval : sc.next().split(",")) {
@@ -38,7 +37,7 @@ public class day13 {
 		// Time until next bus
 		int closestNextBus = Integer.MAX_VALUE;
 		for (int bus : numbers) {
-			int nextBusIn = ((int) Math.ceil(((double) arrival / (double) bus)) * bus) - arrival;
+			int nextBusIn = bus - (arrival % bus);
 			if (nextBusIn < closestNextBus) {
 				nextBusID = bus;
 				closestNextBus = nextBusIn;
