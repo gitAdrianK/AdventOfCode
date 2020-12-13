@@ -4,34 +4,45 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class day13 {
 	public static void main(String[] args) throws FileNotFoundException {
-		System.out.println("295 == " + solvePart1("test_input.txt"));
-		System.out.println(solvePart1("input.txt"));
-		System.out.println("-I don't like reading the file twice, but I don't want to intersperse p1 and p2 code-");
-		System.out.println("1068781 == " + solvePart2("test_input.txt"));
-		System.out.println("75018 == " + solvePart2("test_input_2.txt"));
-		System.out.println("779210 == " + solvePart2("test_input_3.txt"));
-		System.out.println("1261476 == " + solvePart2("test_input_4.txt"));
-		System.out.println("1202161486 == " + solvePart2("test_input_5.txt"));
-		System.out.println(solvePart2("input.txt"));
+		solveDay13("test_input.txt", true, true);
+		solveDay13("test_input_2.txt", false, true);
+		solveDay13("test_input_3.txt", false, true);
+		solveDay13("test_input_4.txt", false, true);
+		solveDay13("test_input_5.txt", false, true);
+		solveDay13("input.txt", true, true);
 	}
 
-	private static int solvePart1(String input) throws FileNotFoundException {
-		ArrayList<Integer> numbers = new ArrayList<Integer>();
+	private static void solveDay13(String input, boolean p1, boolean p2) throws FileNotFoundException {
 		Scanner sc = new Scanner(new File(input));
 		int arrival = sc.nextInt();
-		for (String interval : sc.next().split(",")) {
-			if (interval.equals("x")) {
-				continue;
+		ArrayList<Integer> numbers = new ArrayList<Integer>();
+		ArrayList<Integer> remainders = new ArrayList<Integer>();
+		int offset = 0;
+		for (String s : sc.next().split(",")) {
+			if (s.equals("x")) {
+				offset++;
 			} else {
-				numbers.add(Integer.parseInt(interval));
+				int n = Integer.parseInt(s);
+				numbers.add(n);
+				remainders.add((n - offset) % n);
+				offset++;
 			}
 		}
 		sc.close();
-		// Part 1
+		if (p1) {
+			System.out.println(input + " p1: " + solvePart1(arrival, numbers));
+		}
+		if (p2) {
+			System.out.println(input + " p2: " + solvePart2(numbers, remainders));
+		}
+	}
+	
+	private static int solvePart1(int arrival, List<Integer> numbers) {
 		// ID of the bus that arrives next
 		int nextBusID = 0;
 		// Time until next bus
@@ -46,29 +57,13 @@ public class day13 {
 		return nextBusID * closestNextBus;
 	}
 
-	private static BigInteger solvePart2(String input) throws FileNotFoundException {
-		Scanner sc = new Scanner(new File(input));
-		sc.nextInt();
+	private static BigInteger solvePart2(List<Integer> numbers, List<Integer> remainders) {
 		// Chinese remainder theorem
-		ArrayList<Integer> numbers = new ArrayList<Integer>();
-		ArrayList<Integer> remainder = new ArrayList<Integer>();
-		int offset = 0;
-		for (String s : sc.next().split(",")) {
-			if (s.equals("x")) {
-				offset++;
-			} else {
-				int n = Integer.parseInt(s);
-				numbers.add(n);
-				remainder.add((n - offset) % n);
-				offset++;
-			}
-		}
-		sc.close();
 		BigInteger[] n = new BigInteger[numbers.size()];
-		BigInteger[] a = new BigInteger[remainder.size()];
+		BigInteger[] a = new BigInteger[remainders.size()];
 		for (int i = 0; i < numbers.size(); i++) {
 			n[i] = BigInteger.valueOf(numbers.get(i));
-			a[i] = BigInteger.valueOf(remainder.get(i));
+			a[i] = BigInteger.valueOf(remainders.get(i));
 		}
 		return (chineseRemainder(n, a));
 	}
