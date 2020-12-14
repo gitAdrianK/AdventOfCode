@@ -1,111 +1,46 @@
 package day_4;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Scanner;
 
 public class day4 {
 
-	public static void main(String[] args) {
-		int validPassports = 0;
-		String currentPassport = "";
-		try {
-			BufferedReader reader = new BufferedReader(new FileReader("input.txt"));
-			String line;
-			while ((line = reader.readLine()) != null) {
-				if (line.isEmpty()) {
-					// Evaluate presence of all required fields
-					if (isValidPassport(currentPassport)) {
-						validPassports++;
-					}
-					currentPassport = "";
-				} else {
-					currentPassport += line + " ";
+	public static void main(String[] args) throws FileNotFoundException {		
+		int p1 = 0;
+		int p2 = 0;
+		Scanner sc = new Scanner(new File("input.txt"));
+		sc.useDelimiter("\n\n");
+		while(sc.hasNext()) {
+			String pp = sc.next().replace("\n", " ");
+			if (isValidPassport1(pp)) {
+				p1++;
+				if(isValidPassport2(pp)) {
+					p2++;
 				}
 			}
-			// Bcs the terminating newline is already null to the reader we have
-			// one last password to check
-			if (isValidPassport(currentPassport)) {
-				validPassports++;
-			}
-			currentPassport = "";
-			reader.close();
-		} catch (Exception e) {
-			System.err.format("Exception occurred trying to read '%s'.", "input.txt");
-			e.printStackTrace();
-			return;
 		}
-		System.out.println(validPassports);
+		sc.close();
+		System.out.println(p1 + " " + p2);
 	}
 
-	private static boolean isValidPassport(String passport) {
-		// Required fields validation
-		if (!passport.contains("byr") || !passport.contains("iyr") || !passport.contains("eyr")
-				|| !passport.contains("hgt") || !passport.contains("hcl") || !passport.contains("ecl")
-				|| !passport.contains("pid")) {
-			return false;
-		}
-		String[] fields = passport.split(" ");
-		for (String field : fields) {
-			String[] fieldSplit = field.split(":");
-			// Birth year validation
-			if (fieldSplit[0].equals("byr")) {
-				int birYr = Integer.parseInt(fieldSplit[1]);
-				if (birYr < 1920 || birYr > 2002) {
-					return false;
-				}
-			}
-			// Issue year validation
-			if (fieldSplit[0].equals("iyr")) {
-				int issYr = Integer.parseInt(fieldSplit[1]);
-				if (issYr < 2010 || issYr > 2020) {
-					return false;
-				}
-			}
-			// Expiration year validation
-			if (fieldSplit[0].equals("eyr")) {
-				if (fieldSplit[1].length() != 4) {
-					return false;
-				}
-				int expYr = Integer.parseInt(fieldSplit[1]);
-				if (expYr < 2020 || expYr > 2030) {
-					return false;
-				}
-			}
-			// Height validation
-			if (fieldSplit[0].equals("hgt")) {
-				if(fieldSplit[1].length() <= 2){
-					return false;
-				}
-				int height = Integer.parseInt(fieldSplit[1].substring(0, fieldSplit[1].length() - 2));
-				if (fieldSplit[1].contains("cm")) {
-					if (height < 150 || height > 193) {
-						return false;
-					}
-				} else {
-					if (height < 59 || height > 76) {
-						return false;
-					}
-				}
-			}
-			// Hair colour validation
-			if (fieldSplit[0].equals("hcl")) {
-				if (!fieldSplit[1].matches("^#([a-f0-9]{6})$")) {
-					return false;
-				}
-			}
-			// Eye colour validation
-			if (fieldSplit[0].equals("ecl")) {
-				if (!fieldSplit[1].matches("amb|blu|brn|gry|grn|hzl|oth")) {
-					return false;
-				}
-			}
-			// Passport ID validation
-			if (fieldSplit[0].equals("pid")) {
-				if (!fieldSplit[1].matches("^[0-9]{9}$")) {
-					return false;
-				}	
-			}
-		}
-		return true;
+	private static boolean isValidPassport1(String passport) {
+		return passport.contains("byr")
+				&& passport.contains("iyr")
+				&& passport.contains("eyr")
+				&& passport.contains("hgt")
+				&& passport.contains("hcl")
+				&& passport.contains("ecl")
+				&& passport.contains("pid");
+	}
+	
+	private static boolean isValidPassport2(String passport) {
+		return passport.matches(".*byr:(192[0-9]|19[3-9][0-9]|200[0-2])( |$).*")
+				&& passport.matches(".*iyr:(201[0-9]|2020)( |$).*")
+				&& passport.matches(".*eyr:(202[0-9]|2030)( |$).*")
+				&& passport.matches(".*hgt:(((15[0-9]|1[6-8][0-9]|19[0-3])cm)|((59|6[0-9]|7[0-6])in))( |$).*")
+				&& passport.matches(".*hcl:(#[a-f0-9]{6})( |$).*")
+				&& passport.matches(".*ecl:(amb|blu|brn|gry|grn|hzl|oth)( |$).*")
+				&& passport.matches(".*pid:([0-9]{9})( |$).*");
 	}
 }
