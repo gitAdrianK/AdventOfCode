@@ -21,3 +21,4 @@ Day | Part 1 | Part 2 | Language
 12| ⭐ | ⭐ | Python
 13| ⭐ | ⭐ | Java
 14| ⭐ | ⭐ | Rust
+15| ⭐ | ⭐ | Python
