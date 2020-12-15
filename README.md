@@ -1,9 +1,9 @@
-# Advent of Code
+# [Advent of Code](https://adventofcode.com/)
  
 ## Advent of Code 2020 
 Problems and solutions to the advent of code 2020 in java, rust, or python.
 
-*Please note that, this being my first participation in AoC, code for days one to eight is rather "get it working", sorry about that*
+###### *Please note that, this being my first participation in AoC, code for day(s) 7, 8 is rather "get it working", sorry about that (This message will dissapear once I have revisited all)*
 
 Day | Part 1 | Part 2 | Language
 ----|:------:|:------:|---------:
