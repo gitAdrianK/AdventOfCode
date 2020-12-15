@@ -10,14 +10,9 @@ def solveDay15(input):
     return (p1, p2)
 
 def doRambunctiousRecitation(start, until):
-    # Start sequence
-    to_say = 0
-    dict = {}
-    for i, j in enumerate(start):
-        dict[j] = i + 1
-        to_say = j
-    # Play until until + 1 (range is exclusive)
-    for i in range(len(start) + 1, until + 1):
+    dict = {j: i for i, j in enumerate(start)}
+    to_say = start[-1]
+    for i in range(len(start), until):
         if to_say in dict:
             if dict[to_say] == i - 1:
                 to_say = 0
