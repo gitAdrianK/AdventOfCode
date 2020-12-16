@@ -1,7 +1,5 @@
 package day_16;
 
-import java.util.Comparator;
-
 import javafx.util.Pair;
 
 public class TicketRule {
@@ -43,10 +41,4 @@ public class TicketRule {
 //		return name + ": " + lowerRange.getKey() + "-" + lowerRange.getValue() + ", " + higherRange.getKey() + "-"
 //				+ higherRange.getValue();
 //	}
-}
-
-class NameCompare implements Comparator<TicketRule> {
-	public int compare(TicketRule t1, TicketRule t2) {
-		return t1.getName().compareTo(t2.getName());
-	}
 }
