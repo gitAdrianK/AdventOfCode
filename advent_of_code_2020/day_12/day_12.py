@@ -1,9 +1,6 @@
 import numpy as np
 from enum import IntFlag
 
-from numpy.core.einsumfunc import _update_other_results
-
-
 class Cardinal(IntFlag):
     NORTH = 0
     EAST = 90
