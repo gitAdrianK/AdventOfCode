@@ -50,7 +50,7 @@ def doPart1(expression):
     # Start
     result = expression[0]
     if len(result) != 1:
-        result = str(doPart1(result))
+        result = doPart1(result)
     # Left to right evaluation
     for n, exp in enumerate(expression[1:], 1):
         # If we find an operand add the right side to result
@@ -58,10 +58,10 @@ def doPart1(expression):
             if "+" in exp or "*" in exp:
                 next_ = expression[n + 1]
                 if len(next_) == 1:
-                    result = str(eval(result + exp + next_))
+                    result = eval(str(result) + exp + next_)
                 else:
-                    result = str(eval(result + exp + str(doPart1(next_))))
-    return int(result)
+                    result = eval(str(result) + exp + str(doPart1(next_)))
+    return result
 
 def doPart2(expression):
     # Start
@@ -69,7 +69,7 @@ def doPart2(expression):
     right = []
     result = expression[0]
     if len(result) != 1:
-        result = str(doPart2(result))
+        result = doPart2(result)
     # Find "*" and place in left and right
     foundMult = False
     for exp in expression:
@@ -90,10 +90,10 @@ def doPart2(expression):
         leftStr = ""
         for l in left:
             leftStr += l
-        result = str(eval(leftStr))
+        result = eval(leftStr)
     else:
-        result = str(eval(str(doPart2(left)) + "*" + str(doPart2(right))))
-    return int(result)
+        result = eval(str(doPart2(left)) + "*" + str(doPart2(right)))
+    return result
 
 assert((26, 46) == solveDay18("test_input.txt"))
 assert((437, 1445) == solveDay18("test_input_2.txt"))
