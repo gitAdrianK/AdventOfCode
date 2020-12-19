@@ -1,56 +1,50 @@
 package day_7;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Scanner;
 import java.util.Stack;
 
 import javafx.util.Pair;
 
 public class HandyHaversacks {
-	public static void main(String args[]) {
-		// This got rather lengthy and overly complicated
+	public static void main(String args[]) throws FileNotFoundException {
 		HashMap<String, ArrayList<Pair<Integer, String>>> bagRules = new HashMap<String, ArrayList<Pair<Integer, String>>>();
-		try {
-			BufferedReader reader = new BufferedReader(new FileReader("input.txt"));
-			String line;
-			while ((line = reader.readLine()) != null) {
-				if (line.contains("no other")) {
-					// Bags containing no other bags are dead ends
-					// We can either add them as <key><empty array list>
-					// or not at all like this
-					continue;
-				}
-				String[] splitLine = line.split(" ");
-				// The first two words describe the outer bag
-				String outerBag = splitLine[0] + " " + splitLine[1];
-				splitLine = Arrays.copyOfRange(splitLine, 2, splitLine.length);
-				ArrayList<String> innerSplit = new ArrayList<String>();
-				for (String s : splitLine) {
-					if (!s.matches(".*bag.*|contain")) {
-						innerSplit.add(s);
-					}
-				}
-				int innerAmount = 0;
-				// Inner bags are similar to outer bags but have an additional
-				// amount information at the front
-				ArrayList<Pair<Integer, String>> innerBags = new ArrayList<Pair<Integer, String>>();
-				for (int i = 0; i < innerSplit.size(); i += 3) {
-					innerAmount = Integer.parseInt(innerSplit.get(i));
-					innerBags.add(new Pair<Integer, String>(innerAmount,
-							innerSplit.get(i + 1) + " " + innerSplit.get(i + 2)));
-				}
-				bagRules.put(outerBag, innerBags);
+		Scanner sc = new Scanner(new File("input.txt"));
+		while (sc.hasNextLine()) {
+			String line = sc.nextLine();
+			if (line.contains("no other")) {
+				// Bags containing no other bags are dead ends
+				// We can either add them as <key><empty array list>
+				// or not at all like this
+				continue;
 			}
-			reader.close();
-		} catch (Exception e) {
-			System.err.format("Exception occurred trying to read '%s'.", "input.txt");
-			e.printStackTrace();
-			return;
+			String[] splitLine = line.split(" ");
+			// The first two words describe the outer bag
+			String outerBag = splitLine[0] + " " + splitLine[1];
+			splitLine = Arrays.copyOfRange(splitLine, 2, splitLine.length);
+			ArrayList<String> innerSplit = new ArrayList<String>();
+			for (String s : splitLine) {
+				if (!s.matches(".*bag.*|contain")) {
+					innerSplit.add(s);
+				}
+			}
+			int innerAmount = 0;
+			// Inner bags are similar to outer bags but have an additional
+			// amount information at the front
+			ArrayList<Pair<Integer, String>> innerBags = new ArrayList<Pair<Integer, String>>();
+			for (int i = 0; i < innerSplit.size(); i += 3) {
+				innerAmount = Integer.parseInt(innerSplit.get(i));
+				innerBags.add(
+						new Pair<Integer, String>(innerAmount, innerSplit.get(i + 1) + " " + innerSplit.get(i + 2)));
+			}
+			bagRules.put(outerBag, innerBags);
 		}
+		sc.close();
 		// The amount of outer bag options that can contain a gold bag
 		int shinyGoldOutsideOptions = 0;
 		Stack<String> toCheckBags = new Stack<String>();
