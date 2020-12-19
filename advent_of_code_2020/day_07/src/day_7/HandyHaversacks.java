@@ -10,7 +10,7 @@ import java.util.Stack;
 
 import javafx.util.Pair;
 
-public class day7 {
+public class HandyHaversacks {
 	public static void main(String args[]) {
 		// This got rather lengthy and overly complicated
 		HashMap<String, ArrayList<Pair<Integer, String>>> bagRules = new HashMap<String, ArrayList<Pair<Integer, String>>>();

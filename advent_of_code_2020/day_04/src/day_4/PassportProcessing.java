@@ -4,7 +4,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 
-public class day4 {
+public class PassportProcessing {
 
 	public static void main(String[] args) throws FileNotFoundException {		
 		int p1 = 0;

@@ -8,7 +8,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Scanner;
 
-public class day10 {
+public class AdapterArray {
 	public static void main(String[] args) throws FileNotFoundException {
 		solveDay10("test_input.txt");
 		solveDay10("test_input_2.txt");

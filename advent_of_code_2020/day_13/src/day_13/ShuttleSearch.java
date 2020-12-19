@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-public class day13 {
+public class ShuttleSearch {
 	public static void main(String[] args) throws FileNotFoundException {
 		solveDay13("test_input.txt", true, true);
 		solveDay13("test_input_2.txt", false, true);

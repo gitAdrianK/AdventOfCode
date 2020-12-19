@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-public class day16 {
+public class TicketTranslation {
 
 	public static void main(String[] args) throws FileNotFoundException {
 		// solveDay16("test_input.txt");
