@@ -13,7 +13,7 @@ fn main() {
     let mut accumulator = 0;
     // While adress can have negative numbers, we trust it to never
     // actually be negative as this would adress nothing
-    // and the problem speak of an infinite loop
+    // and the problem speaks of an infinite loop
     let mut adress = 0;
     while let Some(current_op) = operations.get_mut(adress as usize) {
         // Due to testing every adress start value
