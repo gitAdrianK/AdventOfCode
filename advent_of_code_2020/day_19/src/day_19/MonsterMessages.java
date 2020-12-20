@@ -4,10 +4,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Scanner;
-import java.util.stream.Collectors;
 
 import javafx.util.Pair;
 
@@ -15,14 +13,17 @@ public class MonsterMessages {
 
 	public static void main(String[] args) throws FileNotFoundException {
 		solveDay19("test_input.txt");
+		solveDay19("test_input_2.txt");
+		solveDay19("test_input_3.txt");
 		solveDay19("input.txt");
+		solveDay19("input_2.txt");
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public static void solveDay19(String input) throws FileNotFoundException {
 		HashMap<Integer, Pair<String[], String[]>> rules = new HashMap<Integer, Pair<String[], String[]>>();
-		ArrayList<String> possible = new ArrayList<String>();
-		int p1 = 0;
+		ArrayList<String> startRuleArr = null;
+		int valid = 0;
 		Scanner sc = new Scanner(new File(input));
 		for (byte i = 0; sc.hasNextLine();) {
 			String line = sc.nextLine();
@@ -74,24 +75,12 @@ public class MonsterMessages {
 				break;
 			case 1:
 				String[] startRule = rules.get(0).getKey();
-				ArrayList<String> startRuleArr = new ArrayList<String>(Arrays.asList(startRule));
-				possible = createOptions(rules, startRuleArr, 0);
-				possible.sort(Comparator.comparingInt(String::length));
-				//System.out.println(possible);
+				startRuleArr = new ArrayList<String>(Arrays.asList(startRule));
+				startRuleArr.ensureCapacity(30);
 				i++;
 			case 2:
-				int inputLen = line.length();
-				for (String s : possible) {
-					if (s.length() < inputLen) {
-						continue;
-					}
-					if (s.length() > inputLen) {
-						break;
-					}
-					//System.out.println("s: " + s + ", in: " + line + ", cmp: " + line.equals(s));
-					if (s.equals(line)) {
-						p1++;
-					}
+				if (isValid(rules, startRuleArr, line)) {
+					valid++;
 				}
 				break;
 			default:
@@ -103,74 +92,64 @@ public class MonsterMessages {
 //			Pair<String[], String[]> p = e.getValue();
 //			System.out.println(e.getKey() + ": " + Arrays.toString(p.getKey()) + " | " + Arrays.toString(p.getValue()));
 //		}
-		System.out.println(p1 + " " + 0);
+		System.out.println(input + " - " + valid);
 	}
 
-	// TODO: Steal a parser because this is SLOW
-	private static ArrayList<String> createOptions(HashMap<Integer, Pair<String[], String[]>> rules,
-			ArrayList<String> start, int startIndex) {
-		ArrayList<String> options = new ArrayList<String>();
-		//System.out.println("start: " + start);
-		for (int i = startIndex; i < start.size(); i++) {
-			String curr = start.get(i);
-			Pair<String[], String[]> pair = rules.get(Integer.parseInt(curr));
-			String[] left = pair.getKey();
-			if (left != null) {
-				boolean replacementWasTerminator = false;
-				boolean hasReplaced = false;
-				@SuppressWarnings("unchecked")
-				ArrayList<String> newStart = (ArrayList<String>) start.clone();
-				for (String next : left) {
-					if (next.matches("[^0-9]+")) {
-						start.set(i, next);
-						replacementWasTerminator = true;
-						break;
-					} else {
-						if (!hasReplaced) {
-							newStart.set(i, next);
-							hasReplaced = true;
-						} else {
-							newStart.add(i + 1, next);
-						}
-					}
+	private static boolean isValid(HashMap<Integer, Pair<String[], String[]>> rules, ArrayList<String> start, String cmpTo) {
+		boolean isValid = false;
+		//System.out.println(start + " " + cmpTo);
+		if(start.size() > cmpTo.length()) {
+			return false;
+		}
+		int skip = 0;
+		for(String s : start) {
+			if (s.matches("[ab]")) {
+				if (s.charAt(0) != cmpTo.charAt(skip)) {
+					return false;
 				}
-				if (!replacementWasTerminator) {
-					//System.out.println("new left: " + newStart);
-					options.addAll(createOptions(rules, newStart, i));
-				}
-			}
-			String[] right = pair.getValue();
-			if (right != null) {
-				boolean replacementWasTerminator = false;
-				boolean hasReplaced = false;
-				@SuppressWarnings("unchecked")
-				ArrayList<String> newStart = (ArrayList<String>) start.clone();
-				for (String next : right) {
-					if (next.matches("[^0-9]+")) {
-						start.set(i, next);
-						replacementWasTerminator = true;
-						break;
-					} else {
-						if (!hasReplaced) {
-							newStart.set(i, next);
-							hasReplaced = true;
-						} else {
-							newStart.add(i + 1, next);
-						}
-					}
-				}
-				if (!replacementWasTerminator) {
-					//System.out.println("new right: " + newStart);
-					options.addAll(createOptions(rules, newStart, i));
-				}
+				skip++;
+			} else {
+				break;
 			}
 		}
-		StringBuilder builder = new StringBuilder();
-		for (String s : start) {
-			builder.append(s);
+		if (skip >= start.size()) {
+			StringBuilder builder = new StringBuilder();
+			for(String s: start) {
+				builder.append(s);
+			}
+			return cmpTo.equals(builder.toString());
 		}
-		options.add(builder.toString());
-		ArrayList<String> filtered = (ArrayList<String>) options.stream().filter(opt -> !opt.matches(".*[0-9].*")).collect(Collectors.toList());
-		return filtered;
+		Pair<String[], String[]> pair = rules.get(Integer.parseInt(start.get(skip)));
+		String[] leftReplacement = pair.getKey();
+		String[] rightReplacement = pair.getValue();
+		@SuppressWarnings("unchecked")
+		ArrayList<String> startLeft = (ArrayList<String>) start.clone();
+		@SuppressWarnings("unchecked")
+		ArrayList<String> startRight = (ArrayList<String>) start.clone();
+		if (leftReplacement != null) {
+			boolean hasReplaced = false;
+			for (int i = 0; i < leftReplacement.length; i++) {
+				if (!hasReplaced) {
+					startLeft.set(skip, leftReplacement[i]);
+					hasReplaced = true;
+				} else {
+					startLeft.add(skip + i, leftReplacement[i]);
+				}
+			}
+			isValid |= isValid(rules, startLeft, cmpTo);
+		}
+		if (rightReplacement != null) {
+			boolean hasReplaced = false;
+			for (int i = 0; i < rightReplacement.length; i++) {
+				if (!hasReplaced) {
+					startRight.set(skip, rightReplacement[i]);
+					hasReplaced = true;
+				} else {
+					startRight.add(skip + i, rightReplacement[i]);
+				}
+			}
+			isValid |= isValid(rules, startRight, cmpTo);
+		}
+		return isValid;
 	}
 }
