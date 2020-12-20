@@ -12,7 +12,7 @@ Day | Part 1 | Part 2 | Language | 🎄   | Day | Part 1 | Part 2 | Language
 3   | ⭐    | ⭐     | Python   |      | 16  | ⭐    | ⭐     | Java
 4   | ⭐    | ⭐     | Java     |      | 17  | ⭐    | ⭐     | Rust
 5   | ⭐    | ⭐     | Rust     |      | 18  | ⭐    | ⭐     | Python
-6   | ⭐    | ⭐     | Python   |      | 19  | ⭐    | ➖     | Java
+6   | ⭐    | ⭐     | Python   |      | 19  | ⭐    | ⭐     | Java
 7   | ⭐    | ⭐     | Java     |      | 20  | ➖    | ➖     | ➖
 8   | ⭐    | ⭐     | Rust     |      | 21  | ➖    | ➖     | ➖
 9   | ⭐    | ⭐     | Python   |      | 22  | ➖    | ➖     | ➖
