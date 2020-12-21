@@ -3,7 +3,7 @@
 ## [Advent of Code 2020](https://adventofcode.com/2020) 
 Problems and solutions to the advent of code 2020 in Java, Rust, or Python.
 
-###### *Please note that, this being my first participation in AoC as well as an increase in difficulty day after day, code for day(s) 16, 17, 18 is rather "get it working", sorry about that (This message will dissapear once I have revisited all)*
+###### *Please note that, this with an increase in difficulty day after day, code for day(s) 16, 17, 18, 20 is rather "get it working", sorry about that (This message will dissapear once I have revisited all, if I do thusly)*
 
 Day | Part 1 | Part 2 | Language | 🎄   | Day | Part 1 | Part 2 | Language
 ----|:------:|:------:|---------:|:----:|-----|:------:|:------:|---------:|
@@ -13,7 +13,7 @@ Day | Part 1 | Part 2 | Language | 🎄   | Day | Part 1 | Part 2 | Language
 4   | ⭐    | ⭐     | Java     |      | 17  | ⭐    | ⭐     | Rust
 5   | ⭐    | ⭐     | Rust     |      | 18  | ⭐    | ⭐     | Python
 6   | ⭐    | ⭐     | Python   |      | 19  | ⭐    | ⭐     | Java
-7   | ⭐    | ⭐     | Java     |      | 20  | ➖    | ➖     | ➖
+7   | ⭐    | ⭐     | Java     |      | 20  | ⭐    | ⭐     | Rust
 8   | ⭐    | ⭐     | Rust     |      | 21  | ➖    | ➖     | ➖
 9   | ⭐    | ⭐     | Python   |      | 22  | ➖    | ➖     | ➖
 10  | ⭐    | ⭐     | Java     |      | 23  | ➖    | ➖     | ➖
