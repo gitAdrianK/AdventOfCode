@@ -3,20 +3,20 @@ use std::slice::Iter;
 use std::fmt;
 
 #[derive(Clone)]
-pub struct StateTile {
-    pub tile: BaseTile,
+pub struct StateTile<'a> {
+    pub tile: &'a BaseTile,
     state: (Turn, Flip),
 }
 
-impl StateTile {
-    pub fn new_with_state(tile: &BaseTile, turn: Turn, flip: Flip) -> Self {
+impl<'a> StateTile<'a> {
+    pub fn new_with_state(tile: &'a BaseTile, turn: Turn, flip: Flip) -> Self {
         StateTile {
-            tile: tile.clone(),
+            tile: &tile,
             state: (turn, flip),
         }
     }
 
-    pub fn get_variants(tile: &BaseTile) -> Vec<Self> {
+    pub fn get_variants(tile: &'a BaseTile) -> Vec<Self> {
         let mut variants: Vec<StateTile> = vec![];
         for t in Turn::iterator() {
             for f in Flip::iterator() {
@@ -180,7 +180,7 @@ impl StateTile {
     }
 }
 
-impl fmt::Debug for StateTile {
+impl<'a> fmt::Debug for StateTile<'a> {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         write!(f, "{}", self.tile.id)
     }

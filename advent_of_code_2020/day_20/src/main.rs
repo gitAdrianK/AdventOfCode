@@ -69,12 +69,12 @@ fn solve_part_1(tiles: &[BaseTile], square_size: u16) -> Option<Vec<Vec<StateTil
     None
 }
 
-fn assemble_square(
-    mut field: Vec<Vec<StateTile>>,
-    tiles: &[BaseTile],
+fn assemble_square<'a>(
+    mut field: Vec<Vec<StateTile<'a>>>,
+    tiles: &'a [BaseTile],
     square_size: u16,
     current_pos: u16,
-) -> Option<Vec<Vec<StateTile>>> {
+) -> Option<Vec<Vec<StateTile<'a>>>> {
     let (row, col) = (
         (current_pos / square_size) as usize,
         (current_pos % square_size) as usize,
