@@ -2,8 +2,7 @@ package day_22;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.ArrayDeque;
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Scanner;
 
 public class CrabCombat {
@@ -12,7 +11,9 @@ public class CrabCombat {
 		solveDay22("test_input.txt");
 		// Don't run this for part 1 combat
 		solveDay22("test_input_2.txt");
+		long time = System.currentTimeMillis();
 		solveDay22("input.txt");
+		System.out.println(System.currentTimeMillis() - time);
 	}
 
 	public static void solveDay22(String input) throws FileNotFoundException {
@@ -38,36 +39,21 @@ public class CrabCombat {
 		}
 		sc.close();
 		System.out.println(input);
-		//System.out.println(getWinValue(doCombat(playerOne.subdeckPlayer(), playerTwo.subdeckPlayer())));
+		// System.out.println(getWinValue(doCombat(playerOne.subdeckPlayer(), playerTwo.subdeckPlayer())));
 		System.out.println(getWinValue(doRecursiveCombat(playerOne.subdeckPlayer(), playerTwo.subdeckPlayer())));
 	}
 
 	private static Player doRecursiveCombat(Player playerOne, Player playerTwo) {
-		ArrayList<ArrayDeque<Integer>> playerOnePrevious = new ArrayList<ArrayDeque<Integer>>();
-		ArrayList<ArrayDeque<Integer>> playerTwoPrevious = new ArrayList<ArrayDeque<Integer>>();
+		HashSet<String> playerOnePrevious = new HashSet<String>();
+		HashSet<String> playerTwoPrevious = new HashSet<String>();
 		while (!isDeckOutVictory(playerOne, playerTwo)) {
-			for (int i = 0; i < playerOnePrevious.size(); i++) {
-				ArrayDeque<Integer> prevOne = playerOnePrevious.get(i).clone();
-				ArrayDeque<Integer> prevTwo = playerTwoPrevious.get(i).clone();
-				if (prevOne.size() != playerOne.getCards().size() && prevTwo.size() != playerTwo.getCards().size()) {
-					continue;
-				}
-				ArrayDeque<Integer> currOne = playerOne.getCards().clone();
-				ArrayDeque<Integer> currTwo = playerTwo.getCards().clone();
-				compare: while (!prevOne.isEmpty()) {
-					while (!prevTwo.isEmpty()) {
-						if (prevTwo.remove() != currTwo.remove()) {
-							break compare;
-						}
-					}
-					if (prevOne.remove() != currOne.remove()) {
-						break;
-					}
-					return playerOne;
-				}
+			String currOneStr = playerOne.getCards().toString();
+			String currTwoStr = playerTwo.getCards().toString();
+			if (playerOnePrevious.contains(playerOne.getCards().toString()) && playerTwoPrevious.contains(playerTwo.getCards().toString())) {
+				return playerOne;
 			}
-			playerOnePrevious.add(playerOne.getCards().clone());
-			playerTwoPrevious.add(playerTwo.getCards().clone());
+			playerOnePrevious.add(currOneStr);
+			playerTwoPrevious.add(currTwoStr);
 			int playerOneCard = playerOne.remove();
 			int playerTwoCard = playerTwo.remove();
 			if (playerOneCard <= playerOne.size() && playerTwoCard <= playerTwo.size()) {
