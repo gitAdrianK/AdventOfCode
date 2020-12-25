@@ -1,7 +1,9 @@
 # [Advent of Code](https://adventofcode.com/)
 
+Problems and solutions to the advent of code 2020 in various programming languages.
+
 <details>
-<summary>[ 50 ⭐ / 50 ⭐ ] Advent of Code 2020</summary>
+<summary>[ 50 ⭐ / 50 ⭐ ] Advent of Code 2020 (Java, Rust, Python)</summary>
 
 ## [Advent of Code 2020](https://adventofcode.com/2020)
 
