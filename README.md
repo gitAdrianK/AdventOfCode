@@ -9,7 +9,7 @@ Problems and solutions to the "advent of code" events in various programming lan
 
 Problems and solutions to the advent of code 2020 in Java, Rust, or Python.
 
-###### *Please note that, this with an increase in difficulty day after day, code for day(s) 16, 17, 18, 20 is rather "get it working", sorry about that (This message will dissapear once I have revisited all, if I do it)*
+###### *Please note that, with an increase in difficulty day after day, code for day(s) 16, 17, 18, 20 is rather "get it working", sorry about that (This message will dissapear once I have revisited all, if I do it)*
 
 Day | Part 1 | Part 2 | Language | 🎄   | Day | Part 1 | Part 2 | Language
 ----|:------:|:------:|---------:|:----:|-----|:------:|:------:|---------:|
