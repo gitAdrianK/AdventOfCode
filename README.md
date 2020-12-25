@@ -28,3 +28,30 @@ Day | Part 1 | Part 2 | Language | 🎄   | Day | Part 1 | Part 2 | Language
 13  | ⭐    | ⭐     | Java     |      |     |       |         |
  
 </details>
+
+<details>
+<summary>[ 0 ⭐ / 50 ⭐ ] Advent of Code 2019 (Python)</summary>
+
+## [Advent of Code 2019](https://adventofcode.com/2019)
+
+Problems and solutions to the advent of code 2019 in Python.
+
+###### *Please note that, with an increase in difficulty day after day, code for day(s) <no spaghetti yet> is rather "get it working", sorry about that (This message will dissapear once I have revisited all, if I do it)*
+
+Day | Part 1 | Part 2 | Language | 🎅   | Day | Part 1 | Part 2 | Language
+----|:------:|:------:|---------:|:----:|-----|:------:|:------:|---------:|
+1   | ➖    | ➖     | Python   |      | 14  | ➖    | ➖     | Python
+2   | ➖    | ➖     |          |      | 15  | ➖    | ➖     | 
+3   | ➖    | ➖     |          |      | 16  | ➖    | ➖     | 
+4   | ➖    | ➖     |          |      | 17  | ➖    | ➖     | 
+5   | ➖    | ➖     |          |      | 18  | ➖    | ➖     | 
+6   | ➖    | ➖     |          |      | 19  | ➖    | ➖     | 
+7   | ➖    | ➖     |          |      | 20  | ➖    | ➖     | 
+8   | ➖    | ➖     |          |      | 21  | ➖    | ➖     | 
+9   | ➖    | ➖     |          |      | 22  | ➖    | ➖     | 
+10  | ➖    | ➖     |          |      | 23  | ➖    | ➖     | 
+11  | ➖    | ➖     |          |      | 24  | ➖    | ➖     | 
+12  | ➖    | ➖     |          |      | 25  | ➖    | ➖     | 
+13  | ➖    | ➖     |          |      |     |       |         |
+ 
+</details>
