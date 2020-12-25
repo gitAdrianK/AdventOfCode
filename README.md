@@ -1,6 +1,10 @@
 # [Advent of Code](https://adventofcode.com/)
- 
-## [50 ⭐] [Advent of Code 2020](https://adventofcode.com/2020)
+
+<details>
+<summary>[ 50 ⭐ / 50 ⭐ ] Advent of Code 2020</summary>
+
+## [Advent of Code 2020](https://adventofcode.com/2020)
+
 Problems and solutions to the advent of code 2020 in Java, Rust, or Python.
 
 ###### *Please note that, this with an increase in difficulty day after day, code for day(s) 16, 17, 18, 20 is rather "get it working", sorry about that (This message will dissapear once I have revisited all, if I do it)*
@@ -20,3 +24,5 @@ Day | Part 1 | Part 2 | Language | 🎄   | Day | Part 1 | Part 2 | Language
 11  | ⭐    | ⭐     | Rust     |      | 24  | ⭐    | ⭐     | Python
 12  | ⭐    | ⭐     | Python   |      | 25  | ⭐    | ⭐     | Java
 13  | ⭐    | ⭐     | Java     |      |     |       |         |
+ 
+</details>
