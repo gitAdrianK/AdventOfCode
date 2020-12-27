@@ -1,7 +1,11 @@
+import re
+
 from intcode_computer import IntCodeComputer
 def solve_day_02(input):
     computer = IntCodeComputer()
-    computer.initialize_memory(input)
+    regex = re.compile("\d+")
+    f = open(input, "r")
+    computer.initialize_memory(regex.findall(f.readline()))
     computer.run()
     p1 = computer.memory[0]
     p2 = 0
