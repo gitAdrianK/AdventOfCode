@@ -5,7 +5,7 @@ import re
 
 class TestStringMethods(unittest.TestCase):
 
-    regex = re.compile("\d+")
+    regex = re.compile("-{0,1}\d+")
 
     def test_addition(self):
         computer = IntCodeComputer(self.regex.findall("1,0,0,0,99"))
@@ -37,6 +37,11 @@ class TestStringMethods(unittest.TestCase):
         computer = IntCodeComputer(self.regex.findall("1002,4,3,4,33"))
         computer.run()
         self.assertEqual([1002, 4, 3, 4, 99], computer.memory)
+
+    def test_negative(self):
+        computer = IntCodeComputer(self.regex.findall("1101,100,-1,4,0"))
+        computer.run()
+        self.assertEqual([1101, 100, -1, 4, 99], computer.memory)
 
 
 if __name__ == '__main__':
