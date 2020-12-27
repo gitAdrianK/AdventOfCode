@@ -31,7 +31,10 @@ class IntCodeComputer:
             4: self.output,
         }
         func = switcher.get(op_code)
-        func()
+        try:
+            func()
+        except TypeError:
+            return op_code
 
     def reset_computer(self):
         self.instruction_pointer = 0
@@ -39,7 +42,17 @@ class IntCodeComputer:
 
     def run(self):
         while True:
-            if self.execute_instruction() == 0:
+            try:
+                exit_code = self.execute_instruction()
+                if exit_code is not None:
+                    if exit_code == 0:
+                        #print("The computer stopped successfully!")
+                        return
+                    else:
+                        print("The computer encoutered an unknown instruction!", exit_code)
+                        return
+            except IndexError:
+                print("The computer stopped unexpectedly!")
                 return
 
     def get_modes(self, pointer, leading_zeroes):
