@@ -29,6 +29,10 @@ class IntCodeComputer:
             2: self.multiply,
             3: self.input,
             4: self.output,
+            5: self.jump_if_true,
+            6: self.jump_if_false,
+            7: self.less_than,
+            8: self.equals,
         }
         func = switcher.get(op_code)
         try:
@@ -49,7 +53,8 @@ class IntCodeComputer:
                         #print("The computer stopped successfully!")
                         return
                     else:
-                        print("The computer encoutered an unknown instruction!", exit_code)
+                        print(
+                            "The computer encoutered an unknown instruction!", exit_code)
                         return
             except IndexError:
                 print("The computer stopped unexpectedly!")
@@ -70,16 +75,16 @@ class IntCodeComputer:
 
     def add(self):
         modes = self.get_modes(self.instruction_pointer, 2)
-        A = self.get_by_mode(modes[1], self.instruction_pointer+1)
-        B = self.get_by_mode(modes[0], self.instruction_pointer+2)
-        self.memory[self.memory[self.instruction_pointer+3]] = A+B
+        a = self.get_by_mode(modes[1], self.instruction_pointer+1)
+        b = self.get_by_mode(modes[0], self.instruction_pointer+2)
+        self.memory[self.memory[self.instruction_pointer+3]] = a+b
         self.instruction_pointer += 4
 
     def multiply(self):
         modes = self.get_modes(self.instruction_pointer, 2)
-        A = self.get_by_mode(modes[1], self.instruction_pointer+1)
-        B = self.get_by_mode(modes[0], self.instruction_pointer+2)
-        self.memory[self.memory[self.instruction_pointer+3]] = A*B
+        a = self.get_by_mode(modes[1], self.instruction_pointer+1)
+        b = self.get_by_mode(modes[0], self.instruction_pointer+2)
+        self.memory[self.memory[self.instruction_pointer+3]] = a*b
         self.instruction_pointer += 4
 
     def input(self):
@@ -88,9 +93,51 @@ class IntCodeComputer:
         while not is_valid:
             input_ = input("Please enter a single integer number:")
             is_valid = input_.isdigit()
-        self.memory[self.memory[self.instruction_pointer+1]] = input_
+        self.memory[self.memory[self.instruction_pointer+1]] = int(input_)
         self.instruction_pointer += 2
 
     def output(self):
-        print(self.memory[self.memory[self.instruction_pointer+1]])
+        modes = self.get_modes(self.instruction_pointer, 1)
+        a = self.get_by_mode(modes[0], self.instruction_pointer+1)
+        print(a)
         self.instruction_pointer += 2
+
+    def jump_if_true(self):
+        modes = self.get_modes(self.instruction_pointer, 2)
+        a = self.get_by_mode(modes[1], self.instruction_pointer+1)
+        b = self.get_by_mode(modes[0], self.instruction_pointer+2)
+        if a != 0:
+            self.instruction_pointer = b
+        else:
+            self.instruction_pointer += 3
+
+    def jump_if_false(self):
+        modes = self.get_modes(self.instruction_pointer, 2)
+        a = self.get_by_mode(modes[1], self.instruction_pointer+1)
+        b = self.get_by_mode(modes[0], self.instruction_pointer+2)
+        if a == 0:
+            self.instruction_pointer = b
+        else:
+            self.instruction_pointer += 3
+
+    def less_than(self):
+        modes = self.get_modes(self.instruction_pointer, 2)
+        a = self.get_by_mode(modes[1], self.instruction_pointer+1)
+        b = self.get_by_mode(modes[0], self.instruction_pointer+2)
+        c = self.memory[self.instruction_pointer+3]
+        if a < b:
+            self.memory[c] = 1
+        else:
+            self.memory[c] = 0
+        self.instruction_pointer += 4
+
+    def equals(self):
+        modes = self.get_modes(self.instruction_pointer, 2)
+        a = self.get_by_mode(modes[1], self.instruction_pointer+1)
+        b = self.get_by_mode(modes[0], self.instruction_pointer+2)
+        c = self.memory[self.instruction_pointer+3]
+        if a == b:
+            self.memory[c] = 1
+        else:
+            self.memory[c] = 0
+        self.instruction_pointer += 4
