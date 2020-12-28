@@ -1,11 +1,23 @@
+from enum import Enum
+
+
+class Status(Enum):
+    CREATED = 0,
+    TERMINATED = 1,
+    RUNNING = 2,
+    BLOCKED = 3,
+
+
 class IntCodeComputer:
 
     memory = None
     reset_memory = None
-    instruction_pointer = 0
-
+    instruction_pointer = None
+    status = None
     def __init__(self, input):
         self.initialize_memory(input)
+        self.instruction_pointer = 0
+        self.status = Status.CREATED
 
     def initialize_memory(self, input):
         self.memory = []
@@ -43,21 +55,26 @@ class IntCodeComputer:
     def reset(self):
         self.instruction_pointer = 0
         self.memory = self.reset_memory.copy()
+        self.status = Status.CREATED
 
     def run(self):
-        while True:
+        self.status = Status.RUNNING
+        while self.status == Status.RUNNING:
             try:
                 exit_code = self.execute_instruction()
                 if exit_code is not None:
                     if exit_code == 0:
                         #print("The computer stopped successfully!")
+                        self.status = Status.TERMINATED
                         return
                     else:
                         print(
                             "The computer encoutered an unknown instruction!", exit_code)
+                        self.status = Status.TERMINATED
                         return
             except IndexError:
                 print("The computer stopped unexpectedly!")
+                self.status = Status.TERMINATED
                 return
 
     def get_modes(self, pointer, leading_zeroes):
@@ -91,8 +108,13 @@ class IntCodeComputer:
         is_valid = False
         input_ = 0
         while not is_valid:
-            input_ = input("Please enter a single integer number:")
-            is_valid = input_.isdigit()
+            input_ = input("Please enter a single integer number (\"pause\" to suspend the process):")
+            if input_ == "pause":
+                self.status = Status.BLOCKED
+                print()
+                return
+            else:
+                is_valid = input_.isdigit()
         self.memory[self.memory[self.instruction_pointer+1]] = int(input_)
         self.instruction_pointer += 2
 
