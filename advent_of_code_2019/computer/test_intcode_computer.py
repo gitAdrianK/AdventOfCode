@@ -30,7 +30,7 @@ class TestStringMethods(unittest.TestCase):
     def test_reset(self):
         computer = IntCodeComputer(self.regex.findall("1,1,1,4,99,5,6,0,99"))
         computer.run()
-        computer.reset_computer()
+        computer.reset()
         self.assertEqual([1, 1, 1, 4, 99, 5, 6, 0, 99], computer.memory)
 
     def test_modes(self):

@@ -40,7 +40,7 @@ class IntCodeComputer:
         except TypeError:
             return op_code
 
-    def reset_computer(self):
+    def reset(self):
         self.instruction_pointer = 0
         self.memory = self.reset_memory.copy()
 
