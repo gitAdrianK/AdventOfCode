@@ -32,7 +32,9 @@ class IntCodeComputer:
     def execute_instruction(self):
         instruction = self.memory[self.instruction_pointer]
         if instruction == 99:
-            return 0
+            # print("The computer stopped successfully!")
+            self.status = Status.TERMINATED
+            return
         op_code = None
         instruction_str = str(instruction)
         if len(instruction_str) > 2:
@@ -54,7 +56,8 @@ class IntCodeComputer:
         try:
             func()
         except TypeError:
-            return op_code
+            print("The computer encoutered an unknown instruction!", op_code)
+            self.status = Status.TERMINATED
 
     def reset(self):
         self.instruction_pointer = 0
@@ -65,22 +68,14 @@ class IntCodeComputer:
         self.status = Status.RUNNING
         while self.status == Status.RUNNING:
             try:
-                exit_code = self.execute_instruction()
-                if exit_code is not None:
-                    if exit_code == 0:
-                        #print("The computer stopped successfully!")
-                        self.status = Status.TERMINATED
-                        return
-                    else:
-                        print(
-                            "The computer encoutered an unknown instruction!", exit_code)
-                        self.status = Status.TERMINATED
-                        return
+                self.execute_instruction()
             except IndexError:
                 self.memory.extend([0]*8)
-                #print("The computer stopped unexpectedly!")
-                #self.status = Status.TERMINATED
-                #return
+                # FIXME: IndexErrors caused by adressing negative memory
+                # cause the program to continue growing memory indefinitely
+                # print("The computer stopped unexpectedly!")
+                # self.status = Status.TERMINATED
+                # return
 
     def get_modes(self, pointer, leading_zeroes):
         modes = str(self.memory[pointer])
@@ -90,11 +85,15 @@ class IntCodeComputer:
             return modes[:-2].zfill(leading_zeroes)
 
     def get_by_mode(self, mode, pointer):
+        # Position mode
         if mode == "0":
             return self.memory[self.memory[pointer]]
+        # Immediate mode
         elif mode == "1":
             return self.memory[pointer]
+        # Relative mode
         elif mode == "2":
+            # FIXME: This is bugged, doesn't work as intended
             return self.memory[self.relative_base + pointer]
         else:
             print("The computer encountered an unknown mode!", mode)
