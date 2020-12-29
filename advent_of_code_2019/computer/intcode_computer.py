@@ -105,10 +105,10 @@ class IntCodeComputer:
             self.memory[self.memory[pointer]] = value
         # Immediate mode
         elif mode == "1":
-            print("WIP 1")
+            self.memory[pointer] = value
         # Relative mode
         elif mode == "2":
-            print("WIP 2")
+            self.memory[self.memory[pointer]+self.relative_base] = value
         else:
             print("The computer encountered an unknown mode!", mode)
             self.status = Status.TERMINATED
