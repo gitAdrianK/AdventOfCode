@@ -13,10 +13,13 @@ class IntCodeComputer:
     memory = None
     reset_memory = None
     instruction_pointer = None
+    relative_base = None
     status = None
+
     def __init__(self, input):
         self.initialize_memory(input)
         self.instruction_pointer = 0
+        self.relative_base = 0
         self.status = Status.CREATED
 
     def initialize_memory(self, input):
@@ -45,6 +48,7 @@ class IntCodeComputer:
             6: self.jump_if_false,
             7: self.less_than,
             8: self.equals,
+            9: self.relative,
         }
         func = switcher.get(op_code)
         try:
@@ -87,8 +91,10 @@ class IntCodeComputer:
     def get_by_mode(self, mode, pointer):
         if mode == "0":
             return self.memory[self.memory[pointer]]
-        else:
+        elif mode == "1":
             return self.memory[pointer]
+        else:
+            return self.memory[self.relative_base + pointer]
 
     def add(self):
         modes = self.get_modes(self.instruction_pointer, 2)
@@ -108,7 +114,8 @@ class IntCodeComputer:
         is_valid = False
         input_ = 0
         while not is_valid:
-            input_ = input("Please enter a single integer number (\"pause\" to suspend the process):")
+            input_ = input(
+                "Please enter a single integer number (\"pause\" to suspend the process):")
             if input_ == "pause":
                 self.status = Status.BLOCKED
                 print()
@@ -163,3 +170,9 @@ class IntCodeComputer:
         else:
             self.memory[c] = 0
         self.instruction_pointer += 4
+
+    def relative(self):
+        modes = self.get_modes(self.instruction_pointer, 1)
+        a = self.get_by_mode(modes[0], self.instruction_pointer+1)
+        self.relative_base += a
+        self.instruction_pointer += 2
