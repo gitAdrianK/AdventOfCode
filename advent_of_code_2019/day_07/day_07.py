@@ -5,7 +5,7 @@ from io import StringIO
 from itertools import permutations
 
 
-def solve_day_06(input):
+def solve_day_07(input):
     regex = re.compile("-{0,1}\d+")
     f = open(input, "r")
     intcode = regex.findall(f.readline())
@@ -89,4 +89,4 @@ def part_2(intcode):
     return p2
 
 
-print(solve_day_06("input.txt"))
+print(solve_day_07("input.txt"))
