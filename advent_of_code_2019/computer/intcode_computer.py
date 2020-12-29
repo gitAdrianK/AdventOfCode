@@ -99,20 +99,34 @@ class IntCodeComputer:
             print("The computer encountered an unknown mode!", mode)
             self.status = Status.TERMINATED
 
+    def set_by_mode(self, mode, pointer, value):
+        # Position mode
+        if mode == "0":
+            self.memory[self.memory[pointer]] = value
+        # Immediate mode
+        elif mode == "1":
+            print("WIP 1")
+        # Relative mode
+        elif mode == "2":
+            print("WIP 2")
+        else:
+            print("The computer encountered an unknown mode!", mode)
+            self.status = Status.TERMINATED
+
     # 01
     def add(self):
-        modes = self.get_modes(self.instruction_pointer, 2)
-        a = self.get_by_mode(modes[1], self.instruction_pointer+1)
-        b = self.get_by_mode(modes[0], self.instruction_pointer+2)
-        self.memory[self.memory[self.instruction_pointer+3]] = a+b
+        modes = self.get_modes(self.instruction_pointer, 3)
+        a = self.get_by_mode(modes[2], self.instruction_pointer+1)
+        b = self.get_by_mode(modes[1], self.instruction_pointer+2)
+        self.set_by_mode(modes[0], self.instruction_pointer+3, a+b)
         self.instruction_pointer += 4
 
     # 02
     def multiply(self):
-        modes = self.get_modes(self.instruction_pointer, 2)
-        a = self.get_by_mode(modes[1], self.instruction_pointer+1)
-        b = self.get_by_mode(modes[0], self.instruction_pointer+2)
-        self.memory[self.memory[self.instruction_pointer+3]] = a*b
+        modes = self.get_modes(self.instruction_pointer, 3)
+        a = self.get_by_mode(modes[2], self.instruction_pointer+1)
+        b = self.get_by_mode(modes[1], self.instruction_pointer+2)
+        self.set_by_mode(modes[0], self.instruction_pointer+3, a*b)
         self.instruction_pointer += 4
 
     # 03
@@ -128,7 +142,8 @@ class IntCodeComputer:
                 return
             else:
                 is_valid = input_.isdigit()
-        self.memory[self.memory[self.instruction_pointer+1]] = int(input_)
+        modes = self.get_modes(self.instruction_pointer, 1)
+        self.set_by_mode(modes[0], self.instruction_pointer+1, int(input_))
         self.instruction_pointer += 2
 
     # 04
@@ -160,26 +175,24 @@ class IntCodeComputer:
 
     # 07
     def less_than(self):
-        modes = self.get_modes(self.instruction_pointer, 2)
-        a = self.get_by_mode(modes[1], self.instruction_pointer+1)
-        b = self.get_by_mode(modes[0], self.instruction_pointer+2)
-        c = self.memory[self.instruction_pointer+3]
+        modes = self.get_modes(self.instruction_pointer, 3)
+        a = self.get_by_mode(modes[2], self.instruction_pointer+1)
+        b = self.get_by_mode(modes[1], self.instruction_pointer+2)
         if a < b:
-            self.memory[c] = 1
+            self.set_by_mode(modes[0], self.instruction_pointer+3, 1)
         else:
-            self.memory[c] = 0
+            self.set_by_mode(modes[0], self.instruction_pointer+3, 0)
         self.instruction_pointer += 4
 
     # 08
     def equals(self):
-        modes = self.get_modes(self.instruction_pointer, 2)
-        a = self.get_by_mode(modes[1], self.instruction_pointer+1)
-        b = self.get_by_mode(modes[0], self.instruction_pointer+2)
-        c = self.memory[self.instruction_pointer+3]
+        modes = self.get_modes(self.instruction_pointer, 3)
+        a = self.get_by_mode(modes[2], self.instruction_pointer+1)
+        b = self.get_by_mode(modes[1], self.instruction_pointer+2)
         if a == b:
-            self.memory[c] = 1
+            self.set_by_mode(modes[0], self.instruction_pointer+3, 1)
         else:
-            self.memory[c] = 0
+            self.set_by_mode(modes[0], self.instruction_pointer+3, 0)
         self.instruction_pointer += 4
 
     # 09
