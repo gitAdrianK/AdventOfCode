@@ -30,7 +30,7 @@ Day | Part 1 | Part 2 | Language | 🎄   | Day | Part 1 | Part 2 | Language
 </details>
 
 <details>
-<summary>[ 14 ⭐ / 50 ⭐ ] Advent of Code 2019 (Python)</summary>
+<summary>[ 18 ⭐ / 50 ⭐ ] Advent of Code 2019 (Python)</summary>
 
 ## [Advent of Code 2019](https://adventofcode.com/2019)
 
@@ -47,8 +47,8 @@ Day | Part 1 | Part 2 | Language | 🎅   | Day | Part 1 | Part 2 | Language
 5   | ⭐    | ⭐     |          |      | 18  | ➖    | ➖     | 
 6   | ⭐    | ⭐     |          |      | 19  | ➖    | ➖     | 
 7   | ⭐    | ⭐     |          |      | 20  | ➖    | ➖     | 
-8   | ➖    | ➖     |          |      | 21  | ➖    | ➖     | 
-9   | ➖    | ➖     |          |      | 22  | ➖    | ➖     | 
+8   | ⭐    | ⭐     |          |      | 21  | ➖    | ➖     | 
+9   | ⭐    | ⭐     |          |      | 22  | ➖    | ➖     | 
 10  | ➖    | ➖     |          |      | 23  | ➖    | ➖     | 
 11  | ➖    | ➖     |          |      | 24  | ➖    | ➖     | 
 12  | ➖    | ➖     |          |      | 25  | ➖    | ➖     | 
