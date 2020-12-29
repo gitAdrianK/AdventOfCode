@@ -61,6 +61,7 @@ class IntCodeComputer:
 
     def reset(self):
         self.instruction_pointer = 0
+        self.relative_base = 0
         self.memory = self.reset_memory.copy()
         self.status = Status.CREATED
 
@@ -93,8 +94,7 @@ class IntCodeComputer:
             return self.memory[pointer]
         # Relative mode
         elif mode == "2":
-            # FIXME: This is bugged, doesn't work as intended
-            return self.memory[self.relative_base + pointer]
+            return self.memory[self.memory[pointer]+self.relative_base]
         else:
             print("The computer encountered an unknown mode!", mode)
             self.status = Status.TERMINATED
