@@ -77,9 +77,10 @@ class IntCodeComputer:
                         self.status = Status.TERMINATED
                         return
             except IndexError:
-                print("The computer stopped unexpectedly!")
-                self.status = Status.TERMINATED
-                return
+                self.memory.extend([0]*8)
+                #print("The computer stopped unexpectedly!")
+                #self.status = Status.TERMINATED
+                #return
 
     def get_modes(self, pointer, leading_zeroes):
         modes = str(self.memory[pointer])
@@ -93,8 +94,11 @@ class IntCodeComputer:
             return self.memory[self.memory[pointer]]
         elif mode == "1":
             return self.memory[pointer]
-        else:
+        elif mode == "2":
             return self.memory[self.relative_base + pointer]
+        else:
+            print("The computer encountered an unknown mode!", mode)
+            self.status = Status.TERMINATED
 
     def add(self):
         modes = self.get_modes(self.instruction_pointer, 2)
