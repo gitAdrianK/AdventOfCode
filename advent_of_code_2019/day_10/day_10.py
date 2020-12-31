@@ -1,3 +1,6 @@
+import time
+
+
 def solve_day_10(input):
     f = open(input, "r")
     astroids = []
@@ -13,7 +16,90 @@ def solve_day_10(input):
                 if visible > p1_visible:
                     p1 = (x, y)
                     p1_visible = visible
-    return (p1, p1_visible)
+    p2 = (0, 0)
+    astroids[p1[1]] = astroids[p1[1]][:p1[0]]+"O"+astroids[p1[1]][p1[0]+1:]
+    destroyed = 0
+    limit = 200
+    sector = 0
+    while destroyed < limit:
+        if sector == 0:
+            astroid = sees_astroid(p1[0], p1[1], (0, -1), astroids)
+            if astroid[0]:
+                astroids[astroid[2]] = astroids[astroid[2]][:astroid[1]
+                                                            ]+"_"+astroids[astroid[2]][astroid[1]+1:]
+                destroyed += 1
+                if destroyed == limit:
+                    p2 = astroid
+                    break
+            for fraction in fractions:
+                astroid = sees_astroid(
+                    p1[0], p1[1], (fraction[0], -fraction[1]), astroids)
+                if astroid[0]:
+                    astroids[astroid[2]] = astroids[astroid[2]][:astroid[1]
+                                                                ]+"_"+astroids[astroid[2]][astroid[1]+1:]
+                    destroyed += 1
+                    if destroyed == limit:
+                        p2 = astroid
+                        break
+        elif sector == 1:
+            astroid = sees_astroid(p1[0], p1[1], (1, 0), astroids)
+            if astroid[0]:
+                astroids[astroid[2]] = astroids[astroid[2]][:astroid[1]
+                                                            ]+"_"+astroids[astroid[2]][astroid[1]+1:]
+                destroyed += 1
+                if destroyed == limit:
+                    p2 = astroid
+                    break
+            for fraction in fractions:
+                astroid = sees_astroid(
+                    p1[0], p1[1], (fraction[1], fraction[0]), astroids)
+                if astroid[0]:
+                    astroids[astroid[2]] = astroids[astroid[2]][:astroid[1]
+                                                                ]+"_"+astroids[astroid[2]][astroid[1]+1:]
+                    destroyed += 1
+                    if destroyed == limit:
+                        p2 = astroid
+                        break
+        elif sector == 2:
+            astroid = sees_astroid(p1[0], p1[1], (0, 1), astroids)
+            if astroid[0]:
+                astroids[astroid[2]] = astroids[astroid[2]][:astroid[1]
+                                                            ]+"_"+astroids[astroid[2]][astroid[1]+1:]
+                destroyed += 1
+                if destroyed == limit:
+                    p2 = astroid
+                    break
+            for fraction in fractions:
+                astroid = sees_astroid(
+                    p1[0], p1[1], (-fraction[0], fraction[1]), astroids)
+                if astroid[0]:
+                    astroids[astroid[2]] = astroids[astroid[2]][:astroid[1]
+                                                                ]+"_"+astroids[astroid[2]][astroid[1]+1:]
+                    destroyed += 1
+                    if destroyed == limit:
+                        p2 = astroid
+                        break
+        elif sector == 3:
+            astroid = sees_astroid(p1[0], p1[1], (-1, 0), astroids)
+            if astroid[0]:
+                astroids[astroid[2]] = astroids[astroid[2]][:astroid[1]
+                                                            ]+"_"+astroids[astroid[2]][astroid[1]+1:]
+                destroyed += 1
+                if destroyed == limit:
+                    p2 = astroid
+                    break
+            for fraction in fractions:
+                astroid = sees_astroid(
+                    p1[0], p1[1], (-fraction[1], -fraction[0]), astroids)
+                if astroid[0]:
+                    astroids[astroid[2]] = astroids[astroid[2]][:astroid[1]
+                                                                ]+"_"+astroids[astroid[2]][astroid[1]+1:]
+                    destroyed += 1
+                    if destroyed == limit:
+                        p2 = astroid
+                        break
+        sector = ((sector+1) % 4)
+    return ("Part 1:", p1, p1_visible, "Part 2:", p2, p2[1]*100+p2[2])
 
 
 def generate_fractions(limit):
@@ -25,20 +111,21 @@ def generate_fractions(limit):
                 continue
             fractions.append(i/j)
             int_fractions.append((i, j))
+    int_fractions = [x for _, x in sorted(zip(fractions, int_fractions))]
     return int_fractions
 
 
 def count_visible(x, y, fractions, astroids):
     count = 0
-    count += sees_astroid(x, y, (1, 0), astroids)
-    count += sees_astroid(x, y, (0, 1), astroids)
-    count += sees_astroid(x, y, (-1, 0), astroids)
-    count += sees_astroid(x, y, (0, -1), astroids)
+    count += sees_astroid(x, y, (1, 0), astroids)[0]
+    count += sees_astroid(x, y, (0, 1), astroids)[0]
+    count += sees_astroid(x, y, (-1, 0), astroids)[0]
+    count += sees_astroid(x, y, (0, -1), astroids)[0]
     for fraction in fractions:
-        count += sees_astroid(x, y, (fraction[0], fraction[1]), astroids)
-        count += sees_astroid(x, y, (fraction[0], -fraction[1]), astroids)
-        count += sees_astroid(x, y, (-fraction[0], fraction[1]), astroids)
-        count += sees_astroid(x, y, (-fraction[0], -fraction[1]), astroids)
+        count += sees_astroid(x, y, (fraction[0], fraction[1]), astroids)[0]
+        count += sees_astroid(x, y, (fraction[0], -fraction[1]), astroids)[0]
+        count += sees_astroid(x, y, (-fraction[0], fraction[1]), astroids)[0]
+        count += sees_astroid(x, y, (-fraction[0], -fraction[1]), astroids)[0]
     return count
 
 
@@ -48,11 +135,11 @@ def sees_astroid(x, y, coords, astroids):
             x += coords[0]
             y += coords[1]
             if x < 0 or y < 0:
-                return False
+                return (False, 0, 0)
             if astroids[y][x] == "#":
-                return True
+                return (True, x, y)
         except IndexError:
-            return False
+            return (False, 0, 0)
 
 
 print(solve_day_10("input.txt"))
