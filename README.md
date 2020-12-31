@@ -36,7 +36,7 @@ Day | Part 1 | Part 2 | Language | 🎄   | Day | Part 1 | Part 2 | Language
 
 Problems and solutions to the advent of code 2019 in Python.
 
-###### *Please note that, with an increase in difficulty day after day, code for day(s) \<no spaghetti yet\> is rather "get it working", sorry about that (This message will dissapear once I have revisited all, if I do it)*
+###### *Please note that, with an increase in difficulty day after day, code for day(s) 10 is rather "get it working", sorry about that (This message will dissapear once I have revisited all, if I do it)*
 
 Day | Part 1 | Part 2 | Language | 🎅   | Day | Part 1 | Part 2 | Language
 ----|:------:|:------:|---------:|:----:|-----|:------:|:------:|---------:|
@@ -49,7 +49,7 @@ Day | Part 1 | Part 2 | Language | 🎅   | Day | Part 1 | Part 2 | Language
 7   | ⭐    | ⭐     |          |      | 20  | ➖    | ➖     | 
 8   | ⭐    | ⭐     |          |      | 21  | ➖    | ➖     | 
 9   | ⭐    | ⭐     |          |      | 22  | ➖    | ➖     | 
-10  | ➖    | ➖     |          |      | 23  | ➖    | ➖     | 
+10  | ⭐    | ⭐     |          |      | 23  | ➖    | ➖     | 
 11  | ➖    | ➖     |          |      | 24  | ➖    | ➖     | 
 12  | ➖    | ➖     |          |      | 25  | ➖    | ➖     | 
 13  | ➖    | ➖     |          |      |     |       |         |
