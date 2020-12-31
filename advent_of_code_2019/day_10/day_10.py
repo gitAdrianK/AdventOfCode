@@ -1,6 +1,3 @@
-import time
-
-
 def solve_day_10(input):
     f = open(input, "r")
     astroids = []
@@ -21,9 +18,29 @@ def solve_day_10(input):
     destroyed = 0
     limit = 200
     sector = 0
+    for_sector = [
+        # 0,1 are values for the axis
+        # 2,3 are multipliers for sectors
+        # 4,5 are fraction order
+        # can I improve this, yes, will I do it, ¯\_(ツ)_/¯
+        (0, -1, 1, -1, 0, 1),
+        (1, 0, 1, 1, 1, 0),
+        (0, 1, -1, 1, 0, 1),
+        (-1, 0, -1, -1, 1, 0),
+    ]
     while destroyed < limit:
-        if sector == 0:
-            astroid = sees_astroid(p1[0], p1[1], (0, -1), astroids)
+        sec = for_sector[sector]
+        astroid = sees_astroid(p1[0], p1[1], (sec[0], sec[1]), astroids)
+        if astroid[0]:
+            astroids[astroid[2]] = astroids[astroid[2]][:astroid[1]] + \
+                "_"+astroids[astroid[2]][astroid[1]+1:]
+            destroyed += 1
+            if destroyed == limit:
+                p2 = astroid
+                break
+        for fraction in fractions:
+            astroid = sees_astroid(
+                p1[0], p1[1], (fraction[sec[4]]*sec[2], fraction[sec[5]]*sec[3]), astroids)
             if astroid[0]:
                 astroids[astroid[2]] = astroids[astroid[2]][:astroid[1]
                                                             ]+"_"+astroids[astroid[2]][astroid[1]+1:]
@@ -31,73 +48,6 @@ def solve_day_10(input):
                 if destroyed == limit:
                     p2 = astroid
                     break
-            for fraction in fractions:
-                astroid = sees_astroid(
-                    p1[0], p1[1], (fraction[0], -fraction[1]), astroids)
-                if astroid[0]:
-                    astroids[astroid[2]] = astroids[astroid[2]][:astroid[1]
-                                                                ]+"_"+astroids[astroid[2]][astroid[1]+1:]
-                    destroyed += 1
-                    if destroyed == limit:
-                        p2 = astroid
-                        break
-        elif sector == 1:
-            astroid = sees_astroid(p1[0], p1[1], (1, 0), astroids)
-            if astroid[0]:
-                astroids[astroid[2]] = astroids[astroid[2]][:astroid[1]
-                                                            ]+"_"+astroids[astroid[2]][astroid[1]+1:]
-                destroyed += 1
-                if destroyed == limit:
-                    p2 = astroid
-                    break
-            for fraction in fractions:
-                astroid = sees_astroid(
-                    p1[0], p1[1], (fraction[1], fraction[0]), astroids)
-                if astroid[0]:
-                    astroids[astroid[2]] = astroids[astroid[2]][:astroid[1]
-                                                                ]+"_"+astroids[astroid[2]][astroid[1]+1:]
-                    destroyed += 1
-                    if destroyed == limit:
-                        p2 = astroid
-                        break
-        elif sector == 2:
-            astroid = sees_astroid(p1[0], p1[1], (0, 1), astroids)
-            if astroid[0]:
-                astroids[astroid[2]] = astroids[astroid[2]][:astroid[1]
-                                                            ]+"_"+astroids[astroid[2]][astroid[1]+1:]
-                destroyed += 1
-                if destroyed == limit:
-                    p2 = astroid
-                    break
-            for fraction in fractions:
-                astroid = sees_astroid(
-                    p1[0], p1[1], (-fraction[0], fraction[1]), astroids)
-                if astroid[0]:
-                    astroids[astroid[2]] = astroids[astroid[2]][:astroid[1]
-                                                                ]+"_"+astroids[astroid[2]][astroid[1]+1:]
-                    destroyed += 1
-                    if destroyed == limit:
-                        p2 = astroid
-                        break
-        elif sector == 3:
-            astroid = sees_astroid(p1[0], p1[1], (-1, 0), astroids)
-            if astroid[0]:
-                astroids[astroid[2]] = astroids[astroid[2]][:astroid[1]
-                                                            ]+"_"+astroids[astroid[2]][astroid[1]+1:]
-                destroyed += 1
-                if destroyed == limit:
-                    p2 = astroid
-                    break
-            for fraction in fractions:
-                astroid = sees_astroid(
-                    p1[0], p1[1], (-fraction[1], -fraction[0]), astroids)
-                if astroid[0]:
-                    astroids[astroid[2]] = astroids[astroid[2]][:astroid[1]
-                                                                ]+"_"+astroids[astroid[2]][astroid[1]+1:]
-                    destroyed += 1
-                    if destroyed == limit:
-                        p2 = astroid
-                        break
         sector = ((sector+1) % 4)
     return ("Part 1:", p1, p1_visible, "Part 2:", p2, p2[1]*100+p2[2])
 
