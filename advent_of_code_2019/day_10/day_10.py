@@ -5,32 +5,40 @@ def solve_day_10(input):
     p1_visible = 0
     for line in f.readlines():
         astroids.append(line.replace("\n", ""))
+    fractions = generate_fractions(len(astroids))
     for y, col in enumerate(astroids):
         for x, row in enumerate(col):
             if row == "#":
-                visible = count_visible(x, y, astroids)
+                visible = count_visible(x, y, fractions, astroids)
                 if visible > p1_visible:
                     p1 = (x, y)
                     p1_visible = visible
     return (p1, p1_visible)
 
 
-def count_visible(x, y, astroids):
+def generate_fractions(limit):
+    fractions = []
+    int_fractions = []
+    for i in range(1, limit):
+        for j in range(1, limit):
+            if i/j in fractions:
+                continue
+            fractions.append(i/j)
+            int_fractions.append((i, j))
+    return int_fractions
+
+
+def count_visible(x, y, fractions, astroids):
     count = 0
     count += sees_astroid(x, y, (1, 0), astroids)
     count += sees_astroid(x, y, (0, 1), astroids)
     count += sees_astroid(x, y, (-1, 0), astroids)
     count += sees_astroid(x, y, (0, -1), astroids)
-    fractions = []
-    for i in range(1, len(astroids)):
-        for j in range(1, len(astroids)):
-            if i/j in fractions:
-                continue
-            count += sees_astroid(x, y, (i, j), astroids)
-            count += sees_astroid(x, y, (i, -j), astroids)
-            count += sees_astroid(x, y, (-i, j), astroids)
-            count += sees_astroid(x, y, (-i, -j), astroids)
-            fractions.append(i/j)
+    for fraction in fractions:
+        count += sees_astroid(x, y, (fraction[0], fraction[1]), astroids)
+        count += sees_astroid(x, y, (fraction[0], -fraction[1]), astroids)
+        count += sees_astroid(x, y, (-fraction[0], fraction[1]), astroids)
+        count += sees_astroid(x, y, (-fraction[0], -fraction[1]), astroids)
     return count
 
 
