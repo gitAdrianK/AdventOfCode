@@ -1,6 +1,6 @@
 from io import StringIO
 from intcode_computer import IntCodeComputer, Status
-from enum import Enum, IntEnum, Flag
+from enum import Enum, IntEnum
 import re
 import sys
 
@@ -56,7 +56,8 @@ def solve_day_11(input):
     regex = re.compile("-{0,1}\d+")
     f = open(input, "r")
     computer = IntCodeComputer(regex.findall(f.readline()))
-    start = "0\npause\n"
+    #start = "0\npause\n" # Use this to start on a black panel for part 1
+    start = "1\npause\n"  # Use this to start on a white panel for part 2
     sys.stdin = StringIO(start)
     new_stdout = StringIO()
     sys.stdout = new_stdout
@@ -88,6 +89,30 @@ def solve_day_11(input):
         robot.move()
     sys.stdin = old_stdin
     sys.stdout = old_stdout
+    # Gamble kinda payed off
+    from_x = float("inf")
+    to_x = 0
+    from_y = float("inf")
+    to_y = 0
+    for coords in panels:
+        if coords[0] < from_x:
+            from_x = coords[0]
+        elif coords[0] > to_x:
+            to_x = coords[0]
+        if coords[1] < from_y:
+            from_y = coords[1]
+        elif coords[1] > to_y:
+            to_y = coords[1]
+    for y in range(from_y, to_y+1):
+        for x in range(from_x, to_x+1):
+            if (x, y) in panels:
+                if panels[(x, y)] == "0":
+                    print("⬛", end="")
+                else:
+                    print("⬜", end="")
+            else:
+                print("⬛", end="")
+        print()
     return len(panels)
 
 
