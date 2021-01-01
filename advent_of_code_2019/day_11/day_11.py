@@ -18,11 +18,6 @@ class Turn(Enum):
 
 
 class Robot:
-
-    facing = None
-    x = None
-    y = None
-
     def __init__(self):
         self.facing = Facing.UP
         self.x = 0
