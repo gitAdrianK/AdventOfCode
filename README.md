@@ -30,7 +30,7 @@ Day | Part 1 | Part 2 | Language | 🎄   | Day | Part 1 | Part 2 | Language
 </details>
 
 <details>
-<summary>[ 26 ⭐ / 50 ⭐ ] Advent of Code 2019 (Python)</summary>
+<summary>[ 27 ⭐ / 50 ⭐ ] Advent of Code 2019 (Python)</summary>
 
 ## [Advent of Code 2019](https://adventofcode.com/2019)
 
@@ -42,7 +42,7 @@ Problems and solutions to the advent of code 2019 in Python.
 
 Day | Part 1 | Part 2 | Language | 🎅   | Day | Part 1 | Part 2 | Language
 ----|:------:|:------:|---------:|:----:|-----|:------:|:------:|---------:|
-1   | ⭐    | ⭐     | Python   |      | 14  | ➖    | ➖     | Python
+1   | ⭐    | ⭐     | Python   |      | 14  | ⭐    | ➖     | Python
 2   | ⭐    | ⭐     |          |      | 15  | ➖    | ➖     | 
 3   | ⭐    | ⭐     |          |      | 16  | ➖    | ➖     | 
 4   | ⭐    | ⭐     |          |      | 17  | ➖    | ➖     | 
