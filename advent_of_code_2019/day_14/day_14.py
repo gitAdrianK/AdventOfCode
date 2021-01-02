@@ -17,35 +17,41 @@ def solve_day_14(input):
             lst.append(educt)
         reactions[product[1]] = lst
     p1 = 0
-    created = ["FUEL"]
     leftover = {}
     for reaction in reactions:
         if reaction == "ORE" or reaction == "FUEL":
             continue
         leftover[reaction] = 0
+    p1 = create_fuel(reactions, leftover)
+    return (p1, 0)
+
+
+def create_fuel(reactions, leftover):
+    used_ore = 0
+    created = ["FUEL"]
     while len(created) > 0:
         product = created.pop()
-        if product in reactions:
-            educts = reactions[product][1:]
-            for educt in educts:
-                if educt[0] == "ORE":
-                    p1 += educt[1]
+        if product not in reactions:
+            continue
+        educts = reactions[product][1:]
+        for educt in educts:
+            if educt[0] == "ORE":
+                used_ore += educt[1]
+            else:
+                have = leftover[educt[0]]
+                needs = educt[1]
+                diff = have-needs
+                if diff >= 0:
+                    leftover[educt[0]] = diff
                 else:
-                    have = leftover[educt[0]]
-                    needs = educt[1]
-                    diff = have-needs
-                    if diff >= 0:
-                        leftover[educt[0]] = diff
-                    else:
-                        creates = reactions[educt[0]][0]
-                        times = 0
-                        while diff < 0:
-                            diff += creates
-                            times += 1
-                        leftover[educt[0]] = diff
-                        for _ in range(times):
-                            created.append(educt[0])
-    return p1
-
+                    creates = reactions[educt[0]][0]
+                    times = 0
+                    while diff < 0:
+                        diff += creates
+                        times += 1
+                    leftover[educt[0]] = diff
+                    for _ in range(times):
+                        created.append(educt[0])
+    return used_ore
 
 print(solve_day_14("input.txt"))
