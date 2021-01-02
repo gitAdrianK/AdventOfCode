@@ -30,11 +30,13 @@ Day | Part 1 | Part 2 | Language | 🎄   | Day | Part 1 | Part 2 | Language
 </details>
 
 <details>
-<summary>[ 24 ⭐ / 50 ⭐ ] Advent of Code 2019 (Python)</summary>
+<summary>[ 26 ⭐ / 50 ⭐ ] Advent of Code 2019 (Python)</summary>
 
 ## [Advent of Code 2019](https://adventofcode.com/2019)
 
 Problems and solutions to the advent of code 2019 in Python.
+
+###### I regret using input() and print() for my in and out instructions, instead of "cheating" by any other method
 
 ###### *Please note that, with an increase in difficulty day after day, code for day(s) 10 is rather "get it working", sorry about that (This message will dissapear once I have revisited all, if I do it)*
 
@@ -52,6 +54,6 @@ Day | Part 1 | Part 2 | Language | 🎅   | Day | Part 1 | Part 2 | Language
 10  | ⭐    | ⭐     |          |      | 23  | ➖    | ➖     | 
 11  | ⭐    | ⭐     |          |      | 24  | ➖    | ➖     | 
 12  | ⭐    | ⭐     |          |      | 25  | ➖    | ➖     | 
-13  | ➖    | ➖     |          |      |     |       |         |
+13  | ⭐    | ⭐     |          |      |     |       |         |
  
 </details>
