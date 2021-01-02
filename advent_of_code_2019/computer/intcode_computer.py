@@ -9,13 +9,6 @@ class Status(Enum):
 
 
 class IntCodeComputer:
-
-    memory = None
-    reset_memory = None
-    instruction_pointer = None
-    relative_base = None
-    status = None
-
     def __init__(self, input):
         self.initialize_memory(input)
         self.instruction_pointer = 0
