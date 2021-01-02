@@ -141,7 +141,7 @@ class IntCodeComputer:
                 print()
                 return
             else:
-                is_valid = input_.isdigit()
+                is_valid = input_.lstrip("-").isdigit()
         modes = self.get_modes(self.instruction_pointer, 1)
         self.set_by_mode(modes[0], self.instruction_pointer+1, int(input_))
         self.instruction_pointer += 2
