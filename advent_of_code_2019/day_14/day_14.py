@@ -1,3 +1,5 @@
+from collections import defaultdict
+from math import ceil
 import re
 
 
@@ -10,48 +12,45 @@ def solve_day_14(input):
         product = reaction[-1].split(" ")
         educts = reaction[:-1]
         lst = []
-        lst.append(int(product[0]))
         for educt in educts:
             educt = educt.split(" ")
             educt = (educt[1], int(educt[0]))
             lst.append(educt)
-        reactions[product[1]] = lst
-    p1 = 0
-    leftover = {}
-    for reaction in reactions:
-        if reaction == "ORE" or reaction == "FUEL":
+        reactions[product[1]] = [int(product[0]),lst]
+    p1 = create_fuel(reactions)
+    p2 = 2
+    LIMIT = 1_000_000_000_000
+    while (used := create_fuel(reactions, p2)) <= LIMIT:
+        p2 = max(p2*LIMIT//used, p2+1)
+    return (p1, p2-1)
+
+
+def create_fuel(reactions, fuel=1):
+    leftover = defaultdict(int)
+    want = [("FUEL", fuel)]
+    while len(want) > 0:
+        product, need = want.pop(0)
+        have = leftover[product]
+        if product == "ORE":
+            leftover["ORE"] = have+need
             continue
-        leftover[reaction] = 0
-    p1 = create_fuel(reactions, leftover)
-    return (p1, 0)
-
-
-def create_fuel(reactions, leftover):
-    used_ore = 0
-    created = ["FUEL"]
-    while len(created) > 0:
-        product = created.pop()
-        if product not in reactions:
+        if have-need >= 0:
+            leftover[product] = have-need
             continue
-        educts = reactions[product][1:]
-        for educt in educts:
-            if educt[0] == "ORE":
-                used_ore += educt[1]
-            else:
-                have = leftover[educt[0]]
-                needs = educt[1]
-                diff = have-needs
-                if diff >= 0:
-                    leftover[educt[0]] = diff
-                else:
-                    creates = reactions[educt[0]][0]
-                    times = 0
-                    while diff < 0:
-                        diff += creates
-                        times += 1
-                    leftover[educt[0]] = diff
-                    for _ in range(times):
-                        created.append(educt[0])
-    return used_ore
+        else:
+            need = need-have
+            leftover[product] = 0
+        reaction = reactions[product]
+        multiplier = ceil(need/reaction[0])
+        leftover[product] = reaction[0]*multiplier - need
+        for educt in reaction[1]:
+            want.append((educt[0], educt[1]*multiplier))
+    return leftover["ORE"]
 
+
+print(solve_day_14("test_input_0.txt"))
+print(solve_day_14("test_input_1.txt"))
+print(solve_day_14("test_input_2.txt"))
+print(solve_day_14("test_input_3.txt"))
+print(solve_day_14("test_input_4.txt"))
 print(solve_day_14("input.txt"))
