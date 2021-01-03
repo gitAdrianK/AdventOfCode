@@ -14,6 +14,8 @@ class IntCodeComputer:
         self.instruction_pointer = 0
         self.relative_base = 0
         self.status = Status.CREATED
+        self.input_bus = []
+        self.output_bus = []
 
     def initialize_memory(self, input):
         self.memory = []
@@ -46,9 +48,9 @@ class IntCodeComputer:
             9: self.relative,
         }
         func = switcher.get(op_code)
-        try:
+        if func is not None:
             func()
-        except TypeError:
+        else:
             print("The computer encoutered an unknown instruction!", op_code)
             self.status = Status.TERMINATED
 
@@ -106,6 +108,19 @@ class IntCodeComputer:
             print("The computer encountered an unknown mode!", mode)
             self.status = Status.TERMINATED
 
+    def write(self, some):
+        if type(some) is int:
+            self.input_bus.append(some)
+        elif type(some) is list:
+            if type(some[0]) is int:
+                for s in some:
+                    self.input_bus.append(s)
+
+    def read(self):
+        output = self.output_bus
+        self.output_bus = []
+        return output
+
     # 01
     def add(self):
         modes = self.get_modes(self.instruction_pointer, 3)
@@ -124,26 +139,19 @@ class IntCodeComputer:
 
     # 03
     def input(self):
-        is_valid = False
-        input_ = 0
-        while not is_valid:
-            input_ = input(
-                "Please enter a single integer number (\"pause\" to suspend the process):")
-            if input_ == "pause":
-                self.status = Status.BLOCKED
-                print()
-                return
-            else:
-                is_valid = input_.lstrip("-").isdigit()
-        modes = self.get_modes(self.instruction_pointer, 1)
-        self.set_by_mode(modes[0], self.instruction_pointer+1, int(input_))
-        self.instruction_pointer += 2
+        if len(self.input_bus) == 0:
+            self.status = Status.BLOCKED
+        else:
+            modes = self.get_modes(self.instruction_pointer, 1)
+            self.set_by_mode(
+                modes[0], self.instruction_pointer+1, self.input_bus.pop(0))
+            self.instruction_pointer += 2
 
     # 04
     def output(self):
         modes = self.get_modes(self.instruction_pointer, 1)
         a = self.get_by_mode(modes[0], self.instruction_pointer+1)
-        print(a)
+        self.output_bus.append(a)
         self.instruction_pointer += 2
 
     # 05

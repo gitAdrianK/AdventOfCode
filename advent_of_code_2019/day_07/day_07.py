@@ -1,8 +1,6 @@
-import intcode_computer as ic
 import re
-import sys
-from io import StringIO
 from itertools import permutations
+from intcode_computer import IntCodeComputer, Status
 
 
 def solve_day_07(input):
@@ -14,78 +12,48 @@ def solve_day_07(input):
 
 def part_1(intcode):
     p1 = 0
-    computer = ic.IntCodeComputer(intcode)
-    old_stdin = sys.stdin
-    old_stdout = sys.stdout
+    computer = IntCodeComputer(intcode)
     for perm in permutations([0, 1, 2, 3, 4]):
-        # Reset stdout
-        new_stdout = StringIO()
-        sys.stdout = new_stdout
-        # Ready stdin
-        start = str(perm[0]) + "\n0\n"
-        sys.stdin = StringIO(start)
+        computer.write([perm[0], 0])
         computer.run()
-        # Get output nr
-        output = re.sub("[^0-9]", "", new_stdout.getvalue())
+        output = computer.read()[0]
         computer.reset()
         for p in perm[1:]:
-            new_stdout = StringIO()
-            sys.stdout = new_stdout
-            start = str(p) + "\n" + output + "\n"
-            sys.stdin = StringIO(start)
+            computer.write([p, output])
             computer.run()
-            output = re.sub("[^0-9]", "", new_stdout.getvalue())
+            output = computer.read()[0]
             computer.reset()
-        if p1 < int(output):
-            p1 = int(output)
-    sys.stdin = old_stdin
-    sys.stdout = old_stdout
+        if p1 < output:
+            p1 = output
     return p1
 
 
 def part_2(intcode):
     p2 = 0
-    old_stdin = sys.stdin
-    old_stdout = sys.stdout
-    amp_a = ic.IntCodeComputer(intcode)
-    amp_b = ic.IntCodeComputer(intcode)
-    amp_c = ic.IntCodeComputer(intcode)
-    amp_d = ic.IntCodeComputer(intcode)
-    amp_e = ic.IntCodeComputer(intcode)
+    amp_a = IntCodeComputer(intcode)
+    amp_b = IntCodeComputer(intcode)
+    amp_c = IntCodeComputer(intcode)
+    amp_d = IntCodeComputer(intcode)
+    amp_e = IntCodeComputer(intcode)
     amps = [amp_a, amp_b, amp_c, amp_d, amp_e]
     for perm in permutations([5, 6, 7, 8, 9]):
         # Setup the amps phase settings
         for amp in amps:
             amp.reset()
-        sys.stdout = StringIO()
         for index, amp in enumerate(amps):
-            start = str(perm[index]) + "\npause"
-            sys.stdin = StringIO(start)
+            amp.write(perm[index])
             amp.run()
-        new_stdout = StringIO()
-        sys.stdout = new_stdout
-        start = "0\npause"
-        sys.stdin = StringIO(start)
+        amp_a.write(0)
         amp_a.run()
-        prev_amp = 0
         curr_amp = 1
-        output = re.sub("[^0-9]", "", new_stdout.getvalue())
-        while amp_e.status != ic.Status.TERMINATED:
-            new_stdout = StringIO()
-            sys.stdout = new_stdout
-            if amps[prev_amp].status == ic.Status.TERMINATED:
-                start = output
-            else:
-                start = output + "\npause"
-            sys.stdin = StringIO(start)
+        output = amp_a.read()[0]
+        while amp_e.status != Status.TERMINATED:
+            amps[curr_amp].write(output)
             amps[curr_amp].run()
-            output = re.sub("[^0-9]", "", new_stdout.getvalue())
-            prev_amp = curr_amp
+            output = amps[curr_amp].read()[0]
             curr_amp = ((curr_amp+1) % len(amps))
         if p2 < int(output):
             p2 = int(output)
-    sys.stdin = old_stdin
-    sys.stdout = old_stdout
     return p2
 
 

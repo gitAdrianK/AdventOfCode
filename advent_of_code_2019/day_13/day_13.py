@@ -1,7 +1,5 @@
-from io import StringIO
 from intcode_computer import IntCodeComputer, Status
 import re
-import sys
 
 
 def solve_day_13(input):
@@ -11,38 +9,27 @@ def solve_day_13(input):
     ts = play(computer,  {})
     tiles = ts[0]
     score = ts[1]
-    print_arcade(tiles)
     p1 = sum(value == 2 for value in tiles.values())
     computer.reset()
     computer.memory[0] = 2
-    old_stdin = sys.stdin
     while computer.status != Status.TERMINATED:
-        input_ = str(get_joystick(tiles))+"\npause\n"
-        new_stdin = StringIO(input_)
-        sys.stdin = new_stdin
+        computer.write(get_joystick(tiles))
         ts = play(computer, tiles)
         tiles = ts[0]
         score = ts[1]
         # print_arcade(tiles)
-    sys.stdin = old_stdin
     return (p1, score)
 
 
 def play(computer, tiles):
-    old_stdout = sys.stdout
-    new_stdout = StringIO()
-    sys.stdout = new_stdout
     computer.run()
-    sys.stdout = old_stdout
-    output = new_stdout.getvalue()
-    output = re.sub("[^-0-9\n]", "", output)
-    output = output.split("\n")
+    output = computer.read()
     score = 0
-    for out in range(0, len(output)-3, 3):
-        if output[out] == "-1" and output[out+1] == "0":
+    for out in range(0, len(output), 3):
+        if output[out] == -1 and output[out+1] == 0:
             score = output[out+2]
             continue
-        tiles[(int(output[out]), int(output[out+1]))] = int(output[out+2])
+        tiles[(output[out], output[out+1])] = output[out+2]
     return (tiles, score)
 
 
@@ -54,6 +41,8 @@ def get_joystick(tiles):
             ball = tile[0]
         elif tiles[tile] == 4:
             paddle = tile[0]
+        if ball is not None and paddle is not None:
+            break
     joystick = 0
     if ball > paddle:
         joystick = -1
