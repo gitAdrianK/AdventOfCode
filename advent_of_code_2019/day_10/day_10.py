@@ -49,7 +49,7 @@ def solve_day_10(input):
                     p2 = astroid
                     break
         sector = ((sector+1) % 4)
-    return ("Part 1:", p1, p1_visible, "Part 2:", p2, p2[1]*100+p2[2])
+    return (p1_visible, p2[1]*100+p2[2])
 
 
 def generate_fractions(limit):

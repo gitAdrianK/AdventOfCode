@@ -39,10 +39,10 @@ def solve_day_04(input):
     return (p1, p2)
 
 
-print(solve_day_04("test_input_0.txt"))
-print(solve_day_04("test_input_1.txt"))
-print(solve_day_04("test_input_2.txt"))
-print(solve_day_04("test_input_3.txt"))
-print(solve_day_04("test_input_4.txt"))
-print(solve_day_04("test_input_5.txt"))
+# print(solve_day_04("test_input_0.txt"))
+# print(solve_day_04("test_input_1.txt"))
+# print(solve_day_04("test_input_2.txt"))
+# print(solve_day_04("test_input_3.txt"))
+# print(solve_day_04("test_input_4.txt"))
+# print(solve_day_04("test_input_5.txt"))
 print(solve_day_04("input.txt"))

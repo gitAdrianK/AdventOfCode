@@ -11,7 +11,7 @@ def solve_day_02(input):
     has_found = False
     for noun in range(99):
         for verb in range(99):
-            computer.reset_computer()
+            computer.reset()
             computer.memory[1] = noun
             computer.memory[2] = verb
             computer.run()

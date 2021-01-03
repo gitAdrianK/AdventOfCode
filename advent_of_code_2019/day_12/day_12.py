@@ -67,6 +67,6 @@ def lcm_(lst):
     return reduce(lcm, lst)
 
 
-print(solve_day_12("test_input_0.txt", 10))
-print(solve_day_12("test_input_1.txt", 100))
+# print(solve_day_12("test_input_0.txt", 10))
+# print(solve_day_12("test_input_1.txt", 100))
 print(solve_day_12("input.txt", 1000))

@@ -52,6 +52,6 @@ def travese_until_common(orbit, orbits, common, set_=None):
         return travese_until_common(orbits[orbit], orbits, common, set_)
 
 
-print(solve_day_06("test_input_0.txt"))
-print(solve_day_06("test_input_1.txt"))
+# print(solve_day_06("test_input_0.txt"))
+# print(solve_day_06("test_input_1.txt"))
 print(solve_day_06("input.txt"))

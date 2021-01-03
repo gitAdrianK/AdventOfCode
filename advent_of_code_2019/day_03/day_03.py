@@ -96,7 +96,7 @@ def get_cables(cables):
     return (horizontal, vertical, combined)
 
 
-print(solve_day_03("test_input_0.txt"))
-print(solve_day_03("test_input_1.txt"))
-print(solve_day_03("test_input_2.txt"))
+# print(solve_day_03("test_input_0.txt"))
+# print(solve_day_03("test_input_1.txt"))
+# print(solve_day_03("test_input_2.txt"))
 print(solve_day_03("input.txt"))
