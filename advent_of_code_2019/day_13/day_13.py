@@ -10,6 +10,7 @@ def solve_day_13(input):
     tiles = ts[0]
     score = ts[1]
     p1 = sum(value == 2 for value in tiles.values())
+    print_arcade(tiles)
     computer.reset()
     computer.memory[0] = 2
     while computer.status != Status.TERMINATED:
@@ -69,9 +70,9 @@ def print_arcade(tiles):
         for x in range(from_x, to_x+1):
             if (x, y) in tiles:
                 if tiles[(x, y)] == 0:
-                    print("⬛", end="")
+                    print("  ", end="")
                 elif tiles[(x, y)] == 1:
-                    print("⚫", end="")
+                    print("⬛", end="")
                 elif tiles[(x, y)] == 2:
                     print("⬜", end="")
                 elif tiles[(x, y)] == 3:
