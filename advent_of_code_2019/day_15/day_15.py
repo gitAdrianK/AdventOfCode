@@ -44,12 +44,16 @@ def solve_day_15(input):
     regex = re.compile("-{0,1}\d+")
     f = open(input, "r")
     computer = IntCodeComputer(regex.findall(f.readline()))
+    p1 = None
     while computer.status != Status.TERMINATED:
-        scout_area(computer, coords, droid, tiles)
+        p1 = scout_area(computer, coords, droid, tiles)
     print_area(None, tiles)
+    p2 = flood_area([p1[0]], coords, tiles)
+    return (p1[1], p2)
 
 
 def scout_area(computer, coords, droid, tiles, depth=1):
+    oxygen = None
     for d in [1, 2, 3, 4]:
         target = (droid.pos[0]+coords[d][0], droid.pos[1]+coords[d][1])
         if target in tiles:
@@ -62,10 +66,12 @@ def scout_area(computer, coords, droid, tiles, depth=1):
         elif out == 1:
             tiles[target] = "⬛"
             droid.move(d)
-            scout_area(computer, coords, droid, tiles, depth+1)
+            ox = scout_area(computer, coords, droid, tiles, depth+1)
+            if ox is not None:
+                oxygen = ox
         elif out == 2:
-            print("Found Oxygen at", target, "after", depth, "steps")
             tiles[target] = "⭕"
+            oxygen = (target, depth)
             droid.move(d)
             scout_area(computer, coords, droid, tiles, depth+1)
     back = droid.backtrack()
@@ -75,6 +81,20 @@ def scout_area(computer, coords, droid, tiles, depth=1):
         computer.read()
     else:
         computer.status = Status.TERMINATED
+    return oxygen
+
+
+def flood_area(curr, coords, tiles, depth=0):
+    if len(curr) == 0:
+        return depth-1
+    next = []
+    for c in curr:
+        for d in [1, 2, 3, 4]:
+            n = (c[0]+coords[d][0], c[1]+coords[d][1])
+            if n in tiles and tiles[n] == "⬛":
+                tiles[n] = "0️⃣ "
+                next.append(n)
+    return flood_area(next, coords, tiles, depth+1)
 
 
 def print_area(droid, tiles):
@@ -96,7 +116,6 @@ def print_area(droid, tiles):
                 else:
                     print("  ", end="")
         print()
-    print()
 
 
-solve_day_15("input.txt")
+print(solve_day_15("input.txt"))
