@@ -59,6 +59,8 @@ class IntCodeComputer:
         self.relative_base = 0
         self.memory = self.reset_memory.copy()
         self.status = Status.CREATED
+        self.input_bus = []
+        self.output_bus = []
 
     def run(self):
         self.status = Status.RUNNING
