@@ -23,11 +23,42 @@ def solve_day_17(input):
                 if lst[y-1][x] == 35 and lst[y+1][x] == 35 and lst[y][x-1] == 35 and lst[y][x+1] == 35:
                     lst[y][x] = ord("O")
                     p1 += x*y
+    # This was just for pretty printing so see how things look, but I am now using it
+    # to manually solve part 2
     for cy in lst:
         for cx in cy:
-            print(chr(cx), end="")
+            if cx == ord("."):
+                print("⬛", end="")
+            else:
+                print("⬜", end="")
         print()
-    return (p1, 0)
+    # and after a little puzzling we get (see Scaffold.png)
+    # "A"=65, "B"=66, "C"=67, ","=44, "\n"=10
+    # "L"=76, "R"=82
+    # "12"=49 50, "8"=56, "6"=54, "4"=52
+    # "n" = 110
+    # A = L12,L12,L6,L6
+    # B = L12,L6,R12,R8
+    # C = R8,R4,L12
+    # A,C,A,B,C,A,B,C,A,B
+    computer.reset()
+    computer.memory[0] = 2
+    instructions = [
+        #A   ,   C   ,   A   ,   B   ,   C   ,   A   ,   B   ,   C   ,   A   ,   B  \n
+        65, 44, 67, 44, 65, 44, 66, 44, 67, 44, 65, 44, 66, 44, 67, 44, 65, 44, 66, 10,
+        #L   ,   1   2   ,   L   ,   1   2   ,   L   ,   6   ,   L   ,   6  \n
+        76, 44, 49, 50, 44, 76, 44, 49, 50, 44, 76, 44, 54, 44, 76, 44, 54, 10,
+        #L   ,   1   2   ,   L   ,   6   ,   R   ,   1   2   ,   R   ,   8  \n
+        76, 44, 49, 50, 44, 76, 44, 54, 44, 82, 44, 49, 50, 44, 82, 44, 56, 10,
+        #R   ,   8   ,   R   ,   4   ,   L   ,   1   2  \n
+        82, 44, 56, 44, 82, 44, 52, 44, 76, 44, 49, 50, 10,
+        #n,  \n
+        110, 10
+    ]
+    computer.write(instructions)
+    computer.run()
+    p2 = computer.read()[-1]
+    return (p1, p2)
 
 
 print(solve_day_17("input.txt"))
