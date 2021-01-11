@@ -30,12 +30,7 @@ class IntCodeComputer:
             # print("The computer stopped successfully!")
             self.status = Status.TERMINATED
             return
-        op_code = None
-        instruction_str = str(instruction)
-        if len(instruction_str) > 2:
-            op_code = int(instruction_str[-2:])
-        else:
-            op_code = int(instruction_str)
+        op_code = instruction % 100
         switcher = {
             1: self.add,
             2: self.multiply,
