@@ -2,7 +2,7 @@ from intcode_computer import IntCodeComputer
 import re
 
 
-def solve_day_17(input):
+def solve_day_19(input):
     regex = re.compile("-{0,1}\d+")
     f = open(input, "r")
     computer = IntCodeComputer(regex.findall(f.readline()))
@@ -16,7 +16,9 @@ def solve_day_17(input):
             result = computer.read()[0]
             p1 += result
             computer.reset()
+            print(result, end="")
+        print()
     return (p1, 0)
 
 
-print(solve_day_17("input.txt"))
+print(solve_day_19("input.txt"))
