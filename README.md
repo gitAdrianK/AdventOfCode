@@ -37,6 +37,7 @@ Day | Part 1 | Part 2 | Language | 🎄   | Day | Part 1 | Part 2 | Language
 Problems and solutions to the advent of code 2019 in Python.
 
 ###### I regretted using input() and print() for my in and out instructions up until day 13, changed it for day 15, thank god.
+###### I've got to say, starting with day 16 doing this almost fully blind, trying to come up with solutions myself, it sure is getting hard finding a solution that doesn't take days to run.
 
 ###### *Please note that, with an increase in difficulty day after day, code for day(s) 10 is rather "get it working", sorry about that (This message will dissapear once I have revisited all, if I do it)*
 
