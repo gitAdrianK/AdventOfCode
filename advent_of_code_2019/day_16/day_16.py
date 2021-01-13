@@ -1,65 +1,62 @@
-import threading
-
 def solve_day_16(input):
     f = open(input, "r")
     input = [int(c) for c in list(f.readline().replace("\n", ""))]
     input *= 10_000     # Disable for p1 result
     length = len(input)
-    half = length//2
-    third = length//3
-    halfs_done = False
-    thirds_done = False
     output = [0]*length
-    for n in range(100):
-        threads = []
-        print("Cycle ", n+1, "... ", end="", sep="")
-        output[-1] = input[-1]
-        for i in range(length-2, -1, -1):
-            if i >= half:
-                output[i] = (input[i]+output[i+1]) % 10
-            elif i >= third:
-                if not halfs_done:
-                    print("Half done... ", end="")
-                    halfs_done = True
-                try:
-                    output[i] = input[i]+output[i+1]-input[i+i+1]-input[i+i+2]
-                except IndexError:
-                    output[i] = input[i]+output[i+1]-input[i+i+1]
-                output[i] = output[i] % 10
-            else:
-                if not thirds_done:
-                    print("Two thirds done... ", end="")
-                    thirds_done = True
-                thread = threading.Thread(target=thread_func, args=(i, input, output, length))
-                threads.append(thread)
-        for thread in threads:
-            thread.start()
-            thread.join()
-        input = output
-        output = [0]*length
-        halfs_done = False
-        thirds_done = False
-        print("done.")
-    p1 = "".join(str(nr) for nr in input[:8])
-    p2 = "".join(str(nr) for nr in input[int(p1):int(p1)+8])
+    for _ in range(100):
+        subsetsums = []
+        do_step(input, output, subsetsums, length)
+        input = output.copy()
+    p1 = int("".join(str(nr) for nr in input[:8]))
+    p2 = "".join(str(nr) for nr in input[p1:p1+8])
     return (p1, p2)
 
 
-def thread_func(i, input, output, length):
-    new = 0
-    pos = i
+def do_step(input, output, subsetsums, length):
+    do_first_row(input, output, subsetsums, length)
+    for i in range(2, length+1):
+        do_further_rows(input, output, subsetsums, length, i)
+
+
+def do_first_row(input, output, subsetsums, length):
     should_add = True
-    while pos < length:
+    result = 0
+    for pos in range(0, length, 2):
+        tmp = input[pos]
+        subsetsums.append((tmp, 0))
         if should_add:
-            new += sum(input[pos:pos+i+1])
+            result += tmp
         else:
-            new -= sum(input[pos:pos+i+1])
+            result -= tmp
         should_add = not should_add
-        pos += 2*(i+1)
-    output[i] = abs(new) % 10
+    output[0] = abs(result) % 10
 
 
-# print(solve_day_16("test_input_0.txt"))
-# print(solve_day_16("test_input_1.txt"))
-# print(solve_day_16("test_input_2.txt"))
-print(solve_day_16("input.txt"))
+def do_further_rows(input, output, subsetsums, length, i):
+    should_add = True
+    result = 0
+    pos = i-1
+    sss_nr = 0
+    for pos in range(i-1, length, 2*i):
+        if 1+2*sss_nr < i:
+            step = sss_nr*2+2
+            curr, skip = subsetsums[sss_nr]
+            add = input[pos+skip:pos+skip+step]
+            sub = input[pos-step+1:pos]
+            subsetsums[sss_nr] = (curr+sum(add)-sum(sub), skip+1)
+        else:
+            subsetsums[sss_nr] = (sum(input[pos:pos+i]), 0)
+        if should_add:
+            result += subsetsums[sss_nr][0]
+        else:
+            result -= subsetsums[sss_nr][0]
+        should_add = not should_add
+        sss_nr += 1
+    output[i-1] = abs(result) % 10
+
+
+print(solve_day_16("test_input_0.txt"))
+#print(solve_day_16("test_input_1.txt"))
+#print(solve_day_16("test_input_2.txt"))
+#print(solve_day_16("input.txt"))
