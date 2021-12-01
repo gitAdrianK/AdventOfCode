@@ -3,7 +3,7 @@
 Problems and solutions to the "advent of code" events in various programming languages.
 
 <details>
-<summary>[ 00 ⭐ / 50 ⭐ ] Advent of Code 2021 (Rust)</summary>
+<summary>[ 02 ⭐ / 50 ⭐ ] Advent of Code 2021 (Rust)</summary>
 
 ## [Advent of Code 2021](https://adventofcode.com/2021)
 
@@ -13,7 +13,7 @@ Problems and solutions to the advent of code 2021 in Rust.
 
 Day | Part 1 | Part 2 | Language |❄️   | Day | Part 1 | Part 2 | Language
 ----|:------:|:------:|---------:|:----:|-----|:------:|:------:|---------:|
-1   | ➖    | ➖     | Rust     |      | 14  | ➖    | ➖     | Rust
+1   | ⭐    | ⭐     | Rust     |      | 14  | ➖    | ➖     | Rust
 2   | ➖    | ➖     |          |      | 15  | ➖    | ➖     |
 3   | ➖    | ➖     |          |      | 16  | ➖    | ➖     |
 4   | ➖    | ➖     |          |      | 17  | ➖    | ➖     |
