@@ -20,6 +20,7 @@ fn main() {
         }
     }
     boards.push(board.clone());
+    let mut won_indexes: Vec<usize> = Vec::new();
     // Pull numbers and remove pulled numbers from bingo board
     for pull in numbers {
         for board in &mut boards {
@@ -39,7 +40,10 @@ fn main() {
             }
         }
         // Check for bingo
-        for board in &boards {
+        'board: for (index, board) in boards.iter().enumerate() {
+            if won_indexes.contains(&index) {
+                continue;
+            }
             let length = board.len();
             // Horizontals
             for i in 0..length {
@@ -56,7 +60,8 @@ fn main() {
                 }
                 if bingo {
                     get_victory(board, pull);
-                    return;
+                    won_indexes.push(index);
+                    continue 'board;
                 }
             }
             // Verticals
@@ -74,7 +79,8 @@ fn main() {
                 }
                 if bingo {
                     get_victory(board, pull);
-                    return;
+                    won_indexes.push(index);
+                    continue 'board;
                 }
             }
         }
