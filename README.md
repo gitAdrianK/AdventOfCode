@@ -1,3 +1,5 @@
+## Abandoned because I got bored of parsing input, also that question about the tractor beam says it takes and X and Y but somehow it wants 3 inputs, somethings scuffed
+
 # [Advent of Code](https://adventofcode.com/)
 
 Problems and solutions to the "advent of code" events in various programming languages.
